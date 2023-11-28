@@ -7,24 +7,13 @@ public class User
     public String gender;
     public String birthDate;
 
-    public User()
-    {}
-//    public User()
-//    {
-//        Scanner input = new Scanner(System.in);
-//        this.userName =input.next() ;
-//        this.email =input.next() ;
-//        this.passWord =input.next() ;
-//        this.gender  =input.next() ;
-//        this.birthDate =input.next() ;
-//    }
-//    public void displayData()
-//    {
-//        System.out.println(userName);
-//        System.out.println(email);
-//        System.out.println(passWord);
-//        System.out.println(gender);
-//        System.out.println(birthDate);
-//
-//    }
+    public User() {}
+
+    public User(String userName, String email, String passWord, String gender, String birthDate) {
+        this.userName = userName;
+        this.email = email;
+        this.passWord = passWord;
+        this.gender = gender;
+        this.birthDate = birthDate;
+    }
 }

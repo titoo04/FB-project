@@ -1,4 +1,5 @@
 import java.util.Scanner;
+
 public class Register extends User
 {
     public Register()
@@ -9,6 +10,8 @@ public class Register extends User
         this.passWord =input.next() ;
         this.gender  =input.next() ;
         this.birthDate =input.next() ;
+
+        User user = new User(userName, email, passWord, gender, birthDate);
     }
 }
 

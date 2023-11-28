@@ -1,4 +1,5 @@
 import java.util.Scanner;
+
 public class LogIn extends User
 {
     public LogIn(String userName, String passWord)
