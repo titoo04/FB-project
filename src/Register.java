@@ -1,6 +1,5 @@
 import java.util.*;
 import java.io.*;
-
 public class Register extends User
 {
     ArrayList<User>Users= new ArrayList<>();
