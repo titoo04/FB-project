@@ -6,6 +6,8 @@ public class User
     protected String passWord;
     public String gender;
     public String birthDate;
+    public ArrayList<Conversation> convo= new ArrayList<>();
+
 
     public User() {}
 

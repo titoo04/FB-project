@@ -74,7 +74,8 @@ public class Register extends User
         }
     }
 
-    private void loadUsersFromFile() {
+    private void loadUsersFromFile()
+    {
         try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {

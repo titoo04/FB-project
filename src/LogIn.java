@@ -7,48 +7,26 @@ public class LogIn extends User
     boolean Validation = false;
     public LogIn()
     {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt")))
-        {
-            String line;
-            while ((line = reader.readLine()) != null)
-            {
-                String[] userInfo = line.split(" ");
-
-                User user = new User(userInfo[0],userInfo[1],userInfo[2],userInfo[3],userInfo[4]);
-                Users.add(user);
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        if(Validate()){
-            //enter profile
-            System.out.println("Works");
-        }else {
-            //1-try again   2-register  3-forgot info
-            System.out.println("dead");
-        }
+     loadUsersFromFile();
+     Validate();
+     //enter profile
     }
 
-    public boolean Validate(){
-        Scanner input = new Scanner(System.in);
-        this.email = input.next() ;
-        this.passWord = input.next();
+    public void Validate(){
+        this.email = Register.input.next() ;
+        this.passWord = Register.input.next();
         for (User x:Users)
         {
             if(email.equals(x.email) && passWord.equals(x.passWord))
             {
-                Validation = true;
                 Welcome w= new Welcome(x);
                 break;
             }
 
         }
-        return Validation;
     }
 
-    public static void displayUsers()
+    private void loadUsersFromFile()
     {
         try (BufferedReader reader = new BufferedReader(new FileReader("users.txt")))
         {
@@ -57,7 +35,7 @@ public class LogIn extends User
             {
                 String[] userInfo = line.split(" ");
 
-                User user = new User(userInfo[0],userInfo[1],userInfo[2],userInfo[3],userInfo[4]);
+                User user = new User(userInfo[0], userInfo[1], userInfo[2], userInfo[3], userInfo[4]);
                 Users.add(user);
             }
         }
@@ -65,10 +43,5 @@ public class LogIn extends User
         {
             e.printStackTrace();
         }
-        for(User x :Users)
-        {
-            System.out.println(x.userName+' '+x.email+' '+x.passWord+' '+x.gender+ ' '+x.birthDate);//and here
-        }
     }
-
 }
