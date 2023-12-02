@@ -7,7 +7,7 @@ public class Register extends User
         {
     private ArrayList<User>users= new ArrayList<>();
     private boolean exists = false;
-    Scanner input = new Scanner(System.in);
+    static Scanner input = new Scanner(System.in);
 
 
 
