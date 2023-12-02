@@ -46,7 +46,8 @@ public class Welcome
     public void viewProfile(User x)
     {
         System.out.println('2');
-        //Profile pf= new Profile(x);
+        Profile pf= new Profile(x);
+        pf.DisplayInfo();
     }
     public void searchBar(User x)
     {

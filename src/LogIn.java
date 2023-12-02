@@ -22,16 +22,11 @@ public class LogIn extends User
         {
             e.printStackTrace();
         }
-        if(Validate()){
-            //enter profile
-            System.out.println("Works");
-        }else {
-            //1-try again   2-register  3-forgot info
-            System.out.println("dead");
-        }
+        Validate();
     }
 
-    public boolean Validate(){
+    public void Validate()
+    {
         Scanner input = new Scanner(System.in);
         this.email = input.next() ;
         this.passWord = input.next();
@@ -46,7 +41,6 @@ public class LogIn extends User
             }
 
         }
-        return Validation;
     }
 
     public static void displayUsers()
