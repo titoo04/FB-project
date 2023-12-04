@@ -1,5 +1,4 @@
 import  java.util.*;
-
 public abstract class User {
     private int ID;
     private String userName;
