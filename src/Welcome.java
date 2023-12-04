@@ -7,12 +7,13 @@ public class Welcome
     }
     public void displayMenu(User x)
     {
-        System.out.println("Welcome Back"+ x.userName);
+        System.out.println("Welcome Back"+ x.getUserName());
         System.out.println("Press 1)Show feed");
         System.out.println("Press 2)View your profile");
         System.out.println("Press 3)Search for something");
         System.out.println("Press 4) to open you conversations");
-        String choice= Register.input.next();
+
+        String choice= Main.input.next();
         switch (choice)
         {
             case "1":

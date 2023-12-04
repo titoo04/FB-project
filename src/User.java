@@ -1,23 +1,29 @@
 import  java.util.*;
-public class User
-{
-    public String userName;
-    public String email;
-    protected String passWord;
-    public String gender;
-    public String birthDate;
-    public ArrayList<Conversation> convo= new ArrayList<>();
 
+public abstract class User {
+    private int ID;
+    private String userName;
+    private String email;
+    private String passWord;
+    private String gender;
+    private String birthDate;
+    private ArrayList<Post> posts = new ArrayList<>();
 
-    public User() {}
-
-    public User(String userName, String email, String passWord, String gender, String birthDate)
-    {
+    public User(int ID, String userName, String email, String passWord, String gender, String birthDate) {
+        this.ID = ID;
         this.userName = userName;
         this.email = email;
         this.passWord = passWord;
         this.gender = gender;
         this.birthDate = birthDate;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public String getEmail() {

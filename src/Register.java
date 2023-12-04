@@ -3,54 +3,62 @@ import java.util.regex.*;
 import java.io.*;
 import java.text.*;
 
-public class Register extends User
-        {
-    private ArrayList<User>users= new ArrayList<>();
-    private boolean exists = false;
-    static Scanner input = new Scanner(System.in);
+public class Register
+{
+    public Register() {}
 
+    public static void registerUser() {
+        System.out.println("Enter username: ");
+        String userName = Main.input.next();
 
+        System.out.println("Enter email: ");
+        String email = Main.input.next();
 
-    public Register() {
-        loadUsersFromFile();
+        System.out.println("Enter password: ");
+        String passWord = Main.input.next();
 
-        this.userName = input.next();
-        this.email = input.next();
-        this.passWord = input.next();
-        this.gender = input.next();
-        this.birthDate = input.next();
+        System.out.println("Enter gender: ");
+        String gender = Main.input.next();
 
-        User user = new User(userName, email, passWord, gender, birthDate);
+        System.out.println("Enter birth date: ");
+        String birthDate = Main.input.next();
 
-        while(userExists(user) || !validEmail(user)){
-            checkEmail(user);
+        RegisteredUser newUser = RegisteredUser.registerUser(userName, email, passWord, gender, birthDate);
+
+        while(userExists(newUser) || !validEmail(newUser)){
+            checkEmail(newUser);
         }
 
-        while(!validGender(user)){
+        while(!validGender(newUser)){
             System.out.println("Unknown gender");
-            user.setGender(input.next());
+            newUser.setGender(Main.input.next());
         }
 
-        while(!validDate(user)){
+        while(!validDate(newUser)){
             System.out.println("Invalid date, please enter date in this format d-m-yyyy");
-            user.setBirthDate(input.next());
+            newUser.setBirthDate(Main.input.next());
         }
 
-        while(!validPassword(user)){
+        while(!validPassword(newUser)){
             System.out.println("Please enter another password");
-            user.setPassWord(input.next());
+            newUser.setPassWord(Main.input.next());
         }
 
-        addUser(user);
+        addUser(newUser);
     }
 
-    private void addUser(User u){
-        users.add(u);
+    private static void addUser(RegisteredUser u){
+        Main.users.add(u);
         System.out.println("User made successfully");
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt", true))) {
-            writer.write(u.userName + ' ' + u.email + ' ' + u.passWord + ' ' + u.gender + ' ' + u.birthDate);
-            writer.newLine(); // Add a newline for each entry
+            writer.write(String.valueOf(u.getID()) + ' ' +
+                    u.getUserName() + ' ' +
+                    u.getEmail() + ' ' +
+                    u.getPassWord() + ' ' +
+                    u.getGender() + ' ' +
+                    u.getBirthDate());
+            writer.newLine();
 
             System.out.println("Data has been written to file successfully.");
         } catch (IOException e) {
@@ -58,48 +66,28 @@ public class Register extends User
         }
     }
 
-    private void checkEmail(User u){
+    private static void checkEmail(RegisteredUser u){
         if (userExists(u)) {
-            while(userExists(u)){
-                System.out.println("Already exists");
-                u.email = input.next();
-                exists = false;
-            }
+            System.out.println("Email already exists");
+            u.setEmail(Main.input.next());
         }
+
         if(!validEmail(u)){
-            while(!validEmail(u)){
-                System.out.println("Invalid");
-                u.setEmail(input.next());
-            }
+            System.out.println("Invalid email");
+            u.setEmail(Main.input.next());
         }
     }
 
-    private void loadUsersFromFile()
-    {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] userInfo = line.split(" ");
-
-                User user = new User(userInfo[0], userInfo[1], userInfo[2], userInfo[3], userInfo[4]);
-                users.add(user);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private boolean userExists(User u) {
-        for (User x : users) {
+    private static boolean userExists(RegisteredUser u) {
+        for (User x : Main.users) {
             if (x.getEmail().equals(u.getEmail())) {
-                exists = true;
-                break;
+                return true;
             }
         }
-        return exists;
+        return false;
     }
 
-    private boolean validEmail(User u) {
+    private static boolean validEmail(RegisteredUser u) {
         String regex = "^[A-Za-z0-9_.]+@[A-Za-z0-9]+\\.[A-Za-z]{2,}$";//pattern
 
         Pattern pattern = Pattern.compile(regex);
@@ -107,7 +95,7 @@ public class Register extends User
         return matcher.matches();
     }
 
-    public boolean validPassword(User u) {
+    public static boolean validPassword(RegisteredUser u) {
         if (u.getPassWord().length() < 8 || u.getPassWord().length() > 16) {
             System.out.println("Password length must be between 8 and 16 characters.");
             return false;
@@ -131,36 +119,36 @@ public class Register extends User
         return true;
     }
 
-    private boolean containsUppercase(String pw) {
+    private static boolean containsUppercase(String pw) {
         Pattern pattern = Pattern.compile("[A-Z]");
         Matcher matcher = pattern.matcher(pw);
         return matcher.find();
     }
 
-    private boolean containsLowercase(String pw) {
+    private static boolean containsLowercase(String pw) {
         Pattern pattern = Pattern.compile("[a-z]");
         Matcher matcher = pattern.matcher(pw);
         return matcher.find();
     }
 
-    private boolean containsDigit(String pw) {
+    private static boolean containsDigit(String pw) {
         Pattern pattern = Pattern.compile("\\d");
         Matcher matcher = pattern.matcher(pw);
         return matcher.find();
     }
 
-    private boolean validGender(User u) {
+    private static boolean validGender(RegisteredUser u) {
         if(u.getGender().toLowerCase().equals("m") ||
-           u.getGender().toLowerCase().equals("f") ||
-           u.getGender().toLowerCase().equals("male") ||
-           u.getGender().toLowerCase().equals("female"))
+                u.getGender().toLowerCase().equals("f") ||
+                u.getGender().toLowerCase().equals("male") ||
+                u.getGender().toLowerCase().equals("female"))
         {
             return true;
         }
         return false;
     }
 
-    private boolean validDate(User u) {
+    private static boolean validDate(RegisteredUser u) {
         String date = u.getBirthDate();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("d-M-yyyy");//date format
