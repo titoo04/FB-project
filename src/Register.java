@@ -25,21 +25,25 @@ public class Register
 
         RegisteredUser newUser = RegisteredUser.registerUser(userName, email, passWord, gender, birthDate);
 
-        while(userExists(newUser) || !validEmail(newUser)){
+        while(userExists(newUser) || !validEmail(newUser))
+        {
             checkEmail(newUser);
         }
 
-        while(!validGender(newUser)){
+        while(!validGender(newUser))
+        {
             System.out.println("Unknown gender");
             newUser.setGender(Main.input.next());
         }
 
-        while(!validDate(newUser)){
+        while(!validDate(newUser))
+        {
             System.out.println("Invalid date, please enter date in this format d-m-yyyy");
             newUser.setBirthDate(Main.input.next());
         }
 
-        while(!validPassword(newUser)){
+        while(!validPassword(newUser))
+        {
             System.out.println("Please enter another password");
             newUser.setPassWord(Main.input.next());
         }
@@ -47,7 +51,8 @@ public class Register
         addUser(newUser);
     }
 
-    private static void addUser(RegisteredUser u){
+    private static void addUser(RegisteredUser u)
+    {
         Main.users.add(u);
         System.out.println("User made successfully");
 

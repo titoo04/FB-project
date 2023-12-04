@@ -31,6 +31,10 @@ public class Welcome
                 searchBar(x);
                 break;
             }
+            case "4":
+            {
+            openConversations(x);
+            }
             default:
             {
                 invalidSelection(x);
@@ -53,6 +57,10 @@ public class Welcome
     {
         System.out.println('3');
         //        Search sch= new Search(x);
+    }
+    public void openConversations(User x)
+    {
+        Conversation conversation= new Conversation(x);
     }
     public void invalidSelection(User x)
     {

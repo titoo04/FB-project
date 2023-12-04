@@ -1,8 +1,5 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
 
 public class Conversation
 {
@@ -12,9 +9,9 @@ public class Conversation
     public Conversation(User user)
     {
 
-        LoadConversationsFromFile(user);
+       // LoadConversationsFromFile(user);
         DisplayConvos(user);
-        writeConversationsInFile();
+        writeConversationsInFile(user);
     }
     protected void LoadConversationsFromFile(User user)
     {
@@ -30,10 +27,32 @@ public class Conversation
             e.printStackTrace();
         }
     }
-    protected void writeConversationsInFile()
+    protected void writeConversationsInFile(User user)
     {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("conversations.txt", true))) {
+            for (Conversation conversation: user.convos)
+            // for (int i=0;i<user.convos.length();i++)
+            {
+                writer.write("Participants: ");
+                for (User participant:participants)
+                {
+                    writer.write(String.valueOf(participant.getUserName()+' '));
+                }
+                writer.newLine();
+                for (String line: conversation.chat)
+                {
+                    writer.write(String.valueOf(line));
+                    writer.newLine();
+                }
 
+            }
+            System.out.println("Data has been written to file successfully.");
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
+
     protected void DisplayConvos(User user )
     {
         for (Conversation conversation:user.convos)
@@ -42,7 +61,7 @@ public class Conversation
             System.out.println("Press 1) to send a message");
             System.out.println("Press 2) to add participants");
             System.out.println("Press 3) to skip to next conversation");
-            String choice=Register.input.next();
+            String choice=Main.input.next();
             switch (choice) 
             {
                 case "1":
@@ -63,20 +82,21 @@ public class Conversation
     }
     public void sendMessage(Conversation conversation, User user)
     {
-        String message=Register.input.next();
-        conversation.chat.add(user.userName + ": "+ message);
+        String message=Main.input.next();
+        conversation.chat.add(user.getUserName()+ ": "+ message);
     }
     public void addParticipants(ArrayList<User>participants)
     {
         boolean found = false;
-        String name= Register.input.next();
+        String name= Main.input.next();
         for (User participant:participants)
         {
-            if(participant.userName.equals(name))
+            if(participant.getUserName().equals(name))
             {
                 participants.add(participant);
                 System.out.println("User added to conversation successfully");
                 found =true;
+                System.out.println("Do you want to add other participants?");
                 break;
             }
         }
