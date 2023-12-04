@@ -1,47 +1,33 @@
 import java.io.*;
 import java.util.*;
 
-public class LogIn extends User
+public class LogIn
 {
-    static ArrayList<User> Users= new ArrayList<>();
-    boolean Validation = false;
     public LogIn()
-    {
-     loadUsersFromFile();
-     Validate();
-     //enter profile
+    {}
+
+    public static void login(String email, String password){
+        if(Validate(email, password))
+        {
+            //enter profile
+        }
+        else
+        {
+            //1-retry   2-register   3-forgot info
+        }
     }
 
-    public void Validate(){
-        this.email = Register.input.next() ;
-        this.passWord = Register.input.next();
-        for (User x:Users)
+    public static boolean Validate(String email, String password)
+    {
+        for (User u:Main.users)
         {
-            if(email.equals(x.email) && passWord.equals(x.passWord))
+            if(email.equals(u.getEmail()) && password.equals(u.getPassWord()))
             {
-                Welcome w= new Welcome(x);
-                break;
+                return true;
             }
 
         }
+        return false;
     }
 
-    private void loadUsersFromFile()
-    {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt")))
-        {
-            String line;
-            while ((line = reader.readLine()) != null)
-            {
-                String[] userInfo = line.split(" ");
-
-                User user = new User(userInfo[0], userInfo[1], userInfo[2], userInfo[3], userInfo[4]);
-                Users.add(user);
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
 }
