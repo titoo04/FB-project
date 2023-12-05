@@ -71,8 +71,19 @@ public abstract class User
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
-    public void userSearch(String searchUsername)
+    public static void userSearch(String searchUsername)
     {
-
+        boolean found = false;
+        for(User u:Main.users) {
+            if (searchUsername.equals(u.getUserName())) {
+                found = true;
+            } else found = false;
+            if (found)
+                Main.usersToshow.add(new Pair<>(u.getUserName(), u.getEmail()));
+        }
+        for(Pair<String, String> x:Main.usersToshow)
+        {
+            System.out.println(x.getKey()+ " " +x.getValue());
+        }
     }
 }

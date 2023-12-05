@@ -2,8 +2,10 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 
+
 public class Main
 {
+  public static ArrayList<Pair<String, String>> usersToshow= new ArrayList<>();
     static Scanner input = new Scanner(System.in);
     public static ArrayList<User> users = new ArrayList<>();
 
@@ -42,8 +44,9 @@ public class Main
                             signinChoice=input.next();
                             break;
                         case 2:
-                            // search for a friend
-                            signinChoice=input.next();
+                            System.out.println("Enter username you want to search for");
+                            String Usernametosearch=input.next();
+                            User.userSearch(Usernametosearch);
                             break;
                         case 3:
                             //

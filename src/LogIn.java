@@ -21,7 +21,6 @@ public class LogIn
 
     private static void failed()
     {
-
         System.out.println("Login failed");
         System.out.println("1)Retry");
         System.out.println("2)Register");
