@@ -74,16 +74,28 @@ public abstract class User
     public static void userSearch(String searchUsername)
     {
         boolean found = false;
-        for(User u:Main.users) {
-            if (searchUsername.equals(u.getUserName())) {
+        for(User u:Main.users)
+        {
+            if (searchUsername.equals(u.getUserName()))
+            {
                 found = true;
-            } else found = false;
+            }
+            else found = false;
             if (found)
                 Main.usersToshow.add(new Pair<>(u.getUserName(), u.getEmail()));
         }
-        for(Pair<String, String> x:Main.usersToshow)
+        for (int i =0;i<Main.usersToshow.size();i++)
         {
-            System.out.println(x.getKey()+ " " +x.getValue());
+            System.out.println(Main.usersToshow);
         }
+//        for(Pair<String, String> x:Main.usersToshow)
+//        {
+//            System.out.println(x.getKey()+ " " +x.getValue());
+//        }
     }
+    public static void addfriend()
+    {
+
+    }
+
 }

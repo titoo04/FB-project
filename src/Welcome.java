@@ -36,7 +36,6 @@ public class Welcome
                 invalidSelection(x);
                 break;
             }
-
         }
     }
     public void viewFeed(User x)
