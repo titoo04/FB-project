@@ -1,13 +1,15 @@
 import  java.util.*;
 
-public abstract class User {
+public abstract class User
+{
     private int ID;
     private String userName;
     private String email;
     private String passWord;
     private String gender;
     private String birthDate;
-    private ArrayList<Post> posts = new ArrayList<>();
+    private ArrayList<Post> feed = new ArrayList<>();
+    public static ArrayList<Post>postsCreated=new ArrayList<>();
 
     public User(int ID, String userName, String email, String passWord, String gender, String birthDate) {
         this.ID = ID;
@@ -16,6 +18,10 @@ public abstract class User {
         this.passWord = passWord;
         this.gender = gender;
         this.birthDate = birthDate;
+    }
+    public User()
+    {
+
     }
 
     public int getID() {
@@ -64,5 +70,9 @@ public abstract class User {
 
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
+    }
+    public void userSearch(String searchUsername)
+    {
+
     }
 }

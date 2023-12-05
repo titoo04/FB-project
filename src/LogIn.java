@@ -3,22 +3,25 @@ import java.util.*;
 
 public class LogIn
 {
+    public static User loggedIn;
     public LogIn()
     {}
 
-    public static void login(String email, String password){
-        if(Validate(email, password))
+    public static boolean login(String email, String password){
+        if(checkValidate(email, password))
         {
-            //enter profile
+            return true;
         }
         else
         {
-            failed();
+            return false;
+            // failed();
         }
     }
 
     private static void failed()
     {
+
         System.out.println("Login failed");
         System.out.println("1)Retry");
         System.out.println("2)Register");
@@ -32,9 +35,12 @@ public class LogIn
             System.out.println("Enter password: ");
             String password = Main.input.next();
 
-            if(Validate(email, password))
+            if(checkValidate(email, password))
             {
+                Profile profile=new Profile();
+                profile.viewProfile(loggedIn);
                 //enter profile
+
             }
             else
             {
@@ -55,27 +61,6 @@ public class LogIn
             failed();
         }
     }
-
-//    private static void forgotInfo()
-//    {
-//        System.out.println("1)Forgot password");
-//        System.out.println("2)Forgot email");
-//        String forgotOption = Main.input.next();
-//
-//        if(forgotOption.equals("1"))
-//        {
-//            forgotPassword();
-//        }
-//        else if(forgotOption.equals("2"))
-//        {
-//
-//        }
-//        else
-//        {
-//            System.out.println("Invalid option, please choose again");
-//            forgotInfo();
-//        }
-//    }
 
     private static void forgotPassword ()
     {
@@ -114,12 +99,13 @@ public class LogIn
         }
     }
 
-    public static boolean Validate(String email, String password)
+    public static boolean checkValidate(String email, String password)
     {
         for (User u:Main.users)
         {
             if(email.equals(u.getEmail()) && password.equals(u.getPassWord()))
             {
+                loggedIn = u;
                 return true;
             }
 

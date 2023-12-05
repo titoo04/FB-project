@@ -23,7 +23,47 @@ public class Main
             System.out.println("Enter password: ");
             String password = Main.input.next();
 
-            LogIn.login(email,password);
+            if(LogIn.login(email,password));
+            {
+                String signinChoice="y";
+                do
+                {
+                    System.out.println("1.Create Post");
+                    System.out.println("2.Search for a friend");
+                    System.out.println("3.See friend's posts");
+                    System.out.println("4.View your profile");
+                    System.out.println("5.View feed");
+                    int operationChoice=input.nextInt();
+                    switch(operationChoice)
+                    {
+                        case 1:
+                            // create post
+                            Post.createPost();
+                            signinChoice=input.next();
+                            break;
+                        case 2:
+                            // search for a friend
+                            signinChoice=input.next();
+                            break;
+                        case 3:
+                            //
+                            break;
+                        case 4:
+                            Profile profile=new Profile();
+                            profile.viewProfile(LogIn.loggedIn);
+                            profile.viewPosts();
+                            System.out.println("Do you want to do another operation ? (y/n)");
+                            signinChoice=input.next();
+                            break;
+                        case 5:
+                            //view feed
+                            signinChoice=input.next();
+                            break;
+                    }
+
+
+                }while(signinChoice.equals("y"));
+            }
 
         }else if(choice.equals("2")){
             Register.registerUser();

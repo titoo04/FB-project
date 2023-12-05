@@ -2,12 +2,14 @@ import java.util.*;
 
 public class Post {
     private int ID;
+
     private static String postContent;
+
     private int privacyOptions;
+
     private int reacts = 0;
     private ArrayList <Comment> comments= new ArrayList<>();
     private ArrayList <Integer> taggedUsers = new ArrayList<>();
-
     public Post(String content,int privacyOptions)//,tags)
     {
         this.postContent=content;
@@ -15,16 +17,15 @@ public class Post {
         this.privacyOptions=privacyOptions;
         this.reacts=0;
     }
-
     public static void createPost()
     {
         System.out.println("What's on your mind");
         postContent = Main.input.next();
-
         makeTags();
         int privacyNum = privacy();
-
-        Post post = new Post(postContent, privacyNum);//,tags );
+        Post post = new Post(postContent, privacyNum);
+        //,tags );
+        LogIn.loggedIn.postsCreated.add(post);
     }
 
     private static void makeTags()
@@ -44,6 +45,7 @@ public class Post {
             if(addOption.equals("1")) makeTags();
         }
     }
+
     private static int privacy()
     {
         System.out.println("Enter 1 for public ");
@@ -70,5 +72,12 @@ public class Post {
             System.out.println("Invalid input, Choose 1,2,3");
             return privacy();
         }
+    }
+
+    public static void setPostContent(String postContent) {
+        Post.postContent = postContent;
+    }
+    public static String getPostContent() {
+        return postContent;
     }
 }
