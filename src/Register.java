@@ -25,7 +25,7 @@ public class Register
 
         RegisteredUser newUser = RegisteredUser.registerUser(userName, email, passWord, gender, birthDate);
 
-        while(userExists(newUser) || !validEmail(newUser)){
+        while(userExists(newUser.getEmail()) || !validEmail(newUser)){
             checkEmail(newUser);
         }
 
@@ -67,7 +67,7 @@ public class Register
     }
 
     private static void checkEmail(RegisteredUser u){
-        if (userExists(u)) {
+        if (userExists(u.getEmail())) {
             System.out.println("Email already exists");
             u.setEmail(Main.input.next());
         }
@@ -78,9 +78,9 @@ public class Register
         }
     }
 
-    private static boolean userExists(RegisteredUser u) {
+    public static boolean userExists(String email) {
         for (User x : Main.users) {
-            if (x.getEmail().equals(u.getEmail())) {
+            if (x.getEmail().equals(email)) {
                 return true;
             }
         }

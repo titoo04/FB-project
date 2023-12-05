@@ -1,18 +1,17 @@
 import java.util.*;
+
 public class Post {
-    private static String postContent;
-
     private int ID;
-
+    private static String postContent;
+    private int privacyOptions;
+    private int reacts = 0;
+    private ArrayList <Comment> comments= new ArrayList<>();
     private ArrayList <Integer> taggedUsers = new ArrayList<>();
 
-    private int privacyOptions;
-    private ArrayList <Comment> comments= new ArrayList<>();
-    private int reacts = 0;
     public Post(String content,int privacyOptions)//,tags)
     {
         this.postContent=content;
-        this.ID=User.feed.size()+1;
+        //this.ID=User.feed.size()+1;
         this.privacyOptions=privacyOptions;
         this.reacts=0;
     }

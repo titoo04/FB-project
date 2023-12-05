@@ -7,7 +7,7 @@ public abstract class User {
     private String passWord;
     private String gender;
     private String birthDate;
-    public static ArrayList<Post> feed = new ArrayList<>();
+    private ArrayList<Post> posts = new ArrayList<>();
 
     public User(int ID, String userName, String email, String passWord, String gender, String birthDate) {
         this.ID = ID;

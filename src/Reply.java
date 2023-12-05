@@ -3,8 +3,7 @@ public class Reply<K,V>
     private K key;
     private V value;
 
-    public Reply(K key, V value)
-    {
+    public Reply(K key, V value) {
         this.key = key;
         this.value = value;
     }
@@ -13,15 +12,7 @@ public class Reply<K,V>
         return key;
     }
 
-    public void setKey(K key) {
-        this.key = key;
-    }
-
     public V getValue() {
         return value;
-    }
-
-    public void setValue(V value) {
-        this.value = value;
     }
 }
