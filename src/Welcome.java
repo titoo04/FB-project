@@ -7,7 +7,7 @@ public class Welcome
     }
     public void displayMenu(User x)
     {
-        System.out.println("Welcome Back"+ x.getUserName());
+        System.out.println("Welcome Back "+ x.getUserName());
         System.out.println("Press 1)Show feed");
         System.out.println("Press 2)View your profile");
         System.out.println("Press 3)Search for something");
@@ -34,6 +34,7 @@ public class Welcome
             case "4":
             {
             openConversations(x);
+            break;
             }
             default:
             {
@@ -61,6 +62,9 @@ public class Welcome
     public void openConversations(User x)
     {
         Conversation conversation= new Conversation(x);
+        conversation.LoadConversationsFromFile(Main.users);
+        conversation.DisplayConvos(x);
+        conversation.writeConversationsInFile(Main.users);
     }
     public void invalidSelection(User x)
     {
