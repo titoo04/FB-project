@@ -9,7 +9,7 @@ public class Conversation
     public Conversation(User user)
     {
 
-       // LoadConversationsFromFile(user);
+        LoadConversationsFromFile(user);
         DisplayConvos(user);
         writeConversationsInFile(user);
     }
@@ -18,14 +18,55 @@ public class Conversation
         try (BufferedReader reader = new BufferedReader(new FileReader("conversations.text")))
         {
             String line;
-            while ((line = reader.readLine()) != null)
-            {
 
+            // Search for the "Participants:" line
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Participants:")) {
+                    // Extract names dynamically using a list
+                    List<String> names = new ArrayList<>();
+
+                    // Split line after "Participants:" and trim whitespace
+                    String participantsList = line.substring(line.indexOf(":") + 2).trim();
+
+                    // Loop until no more names are found
+                    boolean hasNextName = true;
+                    while (hasNextName) {
+                        // Find the next comma or end of string
+                        int commaIndex = participantsList.indexOf(",");
+                        int endIndex = commaIndex == -1 ? participantsList.length() : commaIndex;
+
+                        // Extract the current name and trim whitespace
+                        String name = participantsList.substring(0, endIndex).trim();
+                        names.add(name);
+
+                        // Update participantsList for next iteration
+                        if (commaIndex != -1) {
+                            participantsList = participantsList.substring(endIndex + 1).trim();
+                        } else {
+                            hasNextName = false;
+                        }
+                    }
+
+                    // Print the extracted names
+                    System.out.println("Participants:");
+                    for (String name : names) {
+                        if (user.getUserName() == name)
+                            continue;
+                        System.out.println(name);
+                    }
+
+                    // Stop searching after finding participants list
+                    break;
+
+                }
+                reader.close();
             }
-        } catch (IOException e)
-        {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
+        System.out.println("who you want to see the chat with");
+
+
     }
     protected void writeConversationsInFile(User user)
     {
@@ -83,7 +124,7 @@ public class Conversation
     public void sendMessage(Conversation conversation, User user)
     {
         String message=Main.input.next();
-        conversation.chat.add(user.getUserName()+ ": "+ message);
+        conversation.chat.add(user.getUserName()+ ": "+ message +".");
     }
     public void addParticipants(ArrayList<User>participants)
     {
