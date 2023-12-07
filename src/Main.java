@@ -1,23 +1,18 @@
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
-
-
 public class Main
 {
-  public static ArrayList<Pair<String, String>> usersToshow= new ArrayList<>();
+    public static ArrayList<User> usersToshow= new ArrayList<>();
     static Scanner input = new Scanner(System.in);
     public static ArrayList<User> users = new ArrayList<>();
 
     public static void main(String[] args)
     {
         loadUsersFromFile();
-
-
         System.out.println("1)Login");
         System.out.println("2)Register");
         String choice = input.next();
-
         if(choice.equals("1"))
         {
             System.out.println("Enter email: ");
@@ -47,6 +42,9 @@ public class Main
                             System.out.println("Enter username you want to search for");
                             String Usernametosearch=input.next();
                             User.userSearch(Usernametosearch);
+                            System.out.println("Choose the user who you want to send a friend request");
+                            int index = input.nextInt();
+                            User.sendRequest(index);
                             break;
                         case 3:
                             //
@@ -54,7 +52,7 @@ public class Main
                         case 4:
                             Profile profile=new Profile();
                             profile.viewProfile(LogIn.loggedIn);
-                            profile.viewPosts();
+                            profile.viewPosts(LogIn.loggedIn);
                             System.out.println("Do you want to do another operation ? (y/n)");
                             signinChoice=input.next();
                             break;
@@ -62,9 +60,11 @@ public class Main
                             //view feed
                             signinChoice=input.next();
                             break;
+                            //  case 6:
+                            //  if(User.seeRequests(LogIn.loggedIn))
+                            //  System.out.println(1);
+                            //  else System.out.println(0);
                     }
-
-
                 }while(signinChoice.equals("y"));
             }
 
@@ -79,7 +79,6 @@ public class Main
             main(args);
         }
     }
-
     private static void loadUsersFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
             String line;

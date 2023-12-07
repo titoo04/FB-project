@@ -65,7 +65,6 @@ public class Register
             e.printStackTrace();
         }
     }
-
     private static void checkEmail(RegisteredUser u){
         if (userExists(u.getEmail())) {
             System.out.println("Email already exists");
