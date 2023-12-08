@@ -2,26 +2,28 @@ import java.io.*;
 import java.util.*;
 
 public class LogIn {
-    public LogIn() {
+    public LogIn()
+    {
     }
 
     public static void login(String email, String password) {
 
         //enter profile
-        Welcome welcome = new Welcome(Validate(email, password));
+        Validate(email, password);
+
     }
 
-    public static User Validate(String email, String password)
+    public static Boolean Validate(String email, String password)
     {
         for (User u : Main.users)
         {
             if (email.equals(u.getEmail()) && password.equals(u.getPassWord()))
             {
-                return u;
+             Welcome w= new Welcome(u);
             }
 
         }
-        return null;
+        return false;
     }
 
 }

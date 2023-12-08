@@ -61,9 +61,9 @@ public class Welcome
     }
     public void openConversations(User x)
     {
-        Conversation conversation= new Conversation(x);
+        Conversation conversation= new Conversation();
         conversation.LoadConversationsFromFile(Main.users);
-        conversation.DisplayConvos(x);
+         conversation.DisplayConvos(x);
         conversation.writeConversationsInFile(Main.users);
     }
     public void invalidSelection(User x)

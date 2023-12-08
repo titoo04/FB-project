@@ -6,7 +6,7 @@ public abstract class User {
     private String passWord;
     private String gender;
     private String birthDate;
-    public ArrayList<Conversation>convos= new ArrayList<>();
+    public ArrayList<Conversation>convos= new ArrayList<Conversation>();
 
 
     public User(int ID, String userName, String email, String passWord, String gender, String birthDate) {
