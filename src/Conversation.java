@@ -28,7 +28,6 @@ public class Conversation
 
                        // Split line after "Participants:" and trim whitespace
                        String participantsList = line.substring(line.indexOf(":") + 2).trim();
-                       System.out.println(participantsList);
                        // Loop until no more names are found
                        boolean hasNextName = true;
                        while (hasNextName) {
@@ -38,11 +37,9 @@ public class Conversation
 
                            // Extract the current name and trim whitespace
                            String userName = participantsList.substring(0,endIndex).trim();
-                           System.out.println(userName);
-                           for (User participant:participants) {
+                           for (User participant:Main.users) {
                                if (participant.getUserName().equals(userName))
                                {
-                                   System.out.println("in");
                                    users.get(indx).convos.get(j).participants.add(participant);
                                }
                            }
@@ -192,14 +189,11 @@ public class Conversation
     }
     public void sendMessage(Conversation conversation, User user)
     {
-        String message=Main.input.next();
-        if (conversation.chat.get(0).equals("Chat is empty"))
-        {
+        String message = Main.input.next();
+        if (conversation.chat.get(0).equals("Chat is empty")) {
             conversation.chat.clear();
-            conversation.chat.add(user.getUserName()+ ": "+ message);
-        }
-        else
-        {
+            conversation.chat.add(user.getUserName() + ": " + message);
+        } else {
             conversation.chat.add(user.getUserName() + ": " + message);
         }
     }
