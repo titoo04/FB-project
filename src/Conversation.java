@@ -23,7 +23,7 @@ public class Conversation
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("Participants:")) {
                     // Extract names dynamically using a list
-                    List<String> names = new ArrayList<>();
+
 
                     // Split line after "Participants:" and trim whitespace
                     String participantsList = line.substring(line.indexOf(":") + 2).trim();
@@ -36,8 +36,12 @@ public class Conversation
                         int endIndex = commaIndex == -1 ? participantsList.length() : commaIndex;
 
                         // Extract the current name and trim whitespace
-                        String name = participantsList.substring(0, endIndex).trim();
-                        names.add(name);
+                        String userName = participantsList.substring(0, endIndex).trim();
+                        for (User participant:participants) {
+                            if (participant.getUserName().equals(userName)) {
+                                participants.add(participant);
+                            }
+                        }
 
                         // Update participantsList for next iteration
                         if (commaIndex != -1) {
@@ -49,10 +53,8 @@ public class Conversation
 
                     // Print the extracted names
                     System.out.println("Participants:");
-                    for (String name : names) {
-                        if (user.getUserName() == name)
-                            continue;
-                        System.out.println(name);
+                    for (User names : participants) {
+                        System.out.println(names);
                     }
 
                     // Stop searching after finding participants list
