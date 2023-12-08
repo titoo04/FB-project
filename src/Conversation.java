@@ -7,9 +7,7 @@ public class Conversation
     protected ArrayList<String>chat= new ArrayList<>();
     private static int id;
     public Conversation()
-    {
-
-    }
+    {}
     protected void LoadConversationsFromFile(ArrayList<User> users)
     {
         int indx=0;
@@ -21,8 +19,46 @@ public class Conversation
                int size = Integer.parseInt(line);
                for (int j = 0; j < size; j++)
                {
-                   Conversation conversation= new Conversation();
-                   users.get(indx).convos.add(conversation);
+                   line= reader.readLine();
+                   if (line.startsWith("Participants:"))
+                   {
+                       // Extract names dynamically using a list
+                       Conversation conversation= new Conversation();
+                       users.get(indx).convos.add(conversation);
+
+                       // Split line after "Participants:" and trim whitespace
+                       String participantsList = line.substring(line.indexOf(":") + 2).trim();
+                       System.out.println(participantsList);
+                       // Loop until no more names are found
+                       boolean hasNextName = true;
+                       while (hasNextName) {
+                           // Find the next comma or end of string
+                           int commaIndex = participantsList.indexOf(",");
+                           int endIndex = commaIndex == -1 ? participantsList.length() : commaIndex;
+
+                           // Extract the current name and trim whitespace
+                           String userName = participantsList.substring(0,endIndex).trim();
+                           System.out.println(userName);
+                           for (User participant:participants) {
+                               if (participant.getUserName().equals(userName))
+                               {
+                                   System.out.println("in");
+                                   users.get(indx).convos.get(j).participants.add(participant);
+                               }
+                           }
+
+                           // Update participantsList for next iteration
+                           if (commaIndex != -1) {
+                               participantsList = participantsList.substring(endIndex + 1).trim();
+                           } else {
+                               hasNextName = false;
+                           }
+                       }
+
+
+                       // Stop searching after finding participants list
+                   }
+
                    int chatSize = Integer.parseInt(reader.readLine());
                    for (int k = 0; k < chatSize; k++)
                    {
@@ -53,11 +89,12 @@ public class Conversation
                 writer.newLine();
                 for (Conversation conversation: user.convos)
                 {
-//                writer.write("Participants: ");
-//                for (User participant:participants)
-//                {
-//                    writer.write(participant.getUserName()+' ');
-//                }
+                writer.write("Participants: ");
+                for (User participant:conversation.participants)
+                {
+                    writer.write(participant.getUserName()+',');
+                }
+                    writer.newLine();
                     writer.write(String.valueOf(conversation.chat.size()));
                     writer.newLine();
                     for (String line: conversation.chat)
@@ -84,7 +121,8 @@ public class Conversation
             {
                 System.out.print("Participants: ");
                 for (User participant:conversation.participants)
-                    System.out.print(participant.getUserName()+" ");
+                    System.out.print(participant.getUserName()+",");
+                System.out.println();
                 for (String msg:conversation.chat)
                 {
                     System.out.println(msg);
@@ -135,7 +173,6 @@ public class Conversation
                     {
                         AddConversation(user);
                     }
-
                 }
             }
         }
@@ -149,7 +186,6 @@ public class Conversation
                     conversation.chat.add("Chat is empty");
                     conversation.participants.add(user);
                     user.convos.add(conversation);
-                    System.out.println(user.convos.size());
                     DisplayConvos(user);
                 }
         }
