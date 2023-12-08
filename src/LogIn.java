@@ -89,6 +89,7 @@ public class LogIn
         }
         else if (forgotChoice.equals("2"))
         {
+            Main.ctr++;
             Main.main(new String[]{});
         }
         else

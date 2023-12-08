@@ -1,18 +1,24 @@
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
+
+
 public class Main
 {
-    public static ArrayList<User> usersToshow= new ArrayList<>();
     static Scanner input = new Scanner(System.in);
+    public static int ctr = 0;
     public static ArrayList<User> users = new ArrayList<>();
+    public static ArrayList<Pair<String, String>> usersToshow= new ArrayList<>();
 
     public static void main(String[] args)
     {
-        loadUsersFromFile();
+        if(ctr == 0) loadUsersFromFile();
+
+
         System.out.println("1)Login");
         System.out.println("2)Register");
         String choice = input.next();
+
         if(choice.equals("1"))
         {
             System.out.println("Enter email: ");
@@ -42,43 +48,63 @@ public class Main
                             System.out.println("Enter username you want to search for");
                             String Usernametosearch=input.next();
                             User.userSearch(Usernametosearch);
-                            System.out.println("Choose the user who you want to send a friend request");
-                            int index = input.nextInt();
-                            User.sendRequest(index);
                             break;
                         case 3:
-                            //
+                            if(LogIn.loggedIn.friendsPosts.isEmpty())
+                            {
+                                Post.noFriendsPosts();
+                            }
+                            else
+                            {
+                                Post.viewPosts(LogIn.loggedIn.friendsPosts);
+                            }
+                            System.out.println("Do you want to do another operation ? (y/n)");
+                            signinChoice=input.next();
                             break;
                         case 4:
-                            Profile profile=new Profile();
+                            Profile profile = new Profile();
                             profile.viewProfile(LogIn.loggedIn);
-                            profile.viewPosts(LogIn.loggedIn);
+                            if(LogIn.loggedIn.postsCreated.isEmpty())
+                            {
+                                Post.noProfilePosts();
+                            }
+                            else
+                            {
+                                Post.viewProfilePosts(LogIn.loggedIn.postsCreated);
+                            }
                             System.out.println("Do you want to do another operation ? (y/n)");
                             signinChoice=input.next();
                             break;
                         case 5:
-                            //view feed
+                            if(LogIn.loggedIn.feed.isEmpty())
+                            {
+                                Post.noFriendsPosts();
+                            }
+                            else
+                            {
+                                Post.viewPosts(LogIn.loggedIn.feed);
+                            }
+                            System.out.println("Do you want to do another operation ? (y/n)");
                             signinChoice=input.next();
                             break;
-                            //  case 6:
-                            //  if(User.seeRequests(LogIn.loggedIn))
-                            //  System.out.println(1);
-                            //  else System.out.println(0);
                     }
+
+
                 }while(signinChoice.equals("y"));
             }
 
         }else if(choice.equals("2")){
             Register.registerUser();
+            ctr++;
             main(args);
-        }//else if(choice.eguals("3")){
-        //    return ;
-        //}
+        }
         else {
             System.out.println("invalid input pls enter again");
+            ctr++;
             main(args);
         }
     }
+
     private static void loadUsersFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
             String line;

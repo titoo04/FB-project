@@ -17,15 +17,44 @@ public class Post {
         this.privacyOptions=privacyOptions;
         this.reacts=0;
     }
+
     public static void createPost()
     {
         System.out.println("What's on your mind");
         postContent = Main.input.next();
-        makeTags();
+        //makeTags();
         int privacyNum = privacy();
         Post post = new Post(postContent, privacyNum);
         //,tags );
-        LogIn.loggedIn.postsCreated.add(post);
+        switch (privacyNum)
+        {
+            case 1:
+//                //add post to all users
+//                for(User u:Main.users)
+//                {
+//                    u.feed.add(post);
+//                }
+                //add friends of user (all)
+                for(Friend f:User.friends)
+                {
+                    f.feed.add(post);
+                }
+            case 2:
+//                  for(Friend f:User.friends)
+//                  {
+//                      f.feed.add(post);
+//                      f.friendsPosts.add(post);
+//                  }
+
+                //add to friends of user (not restricted)
+                for(Friend f:User.friends)
+                {
+                    if(!f.isRestricted()) f.feed.add(post);
+                }
+            case 3:
+                LogIn.loggedIn.postsCreated.add(post); // add post to profile
+
+        }
     }
 
     private static void makeTags()
@@ -69,8 +98,175 @@ public class Post {
         }
         else
         {
-            System.out.println("Invalid input, Choose 1,2,3");
+            System.out.println("Invalid input, Choose 1, 2, or 3");
             return privacy();
+        }
+    }
+
+    public static void viewPosts(ArrayList<Post> posts)
+    {
+        int idx = 1;
+        for (Post p:posts)
+        {
+            System.out.println(p.getPostContent());
+            System.out.println("1)Like");
+            System.out.println("2)View comments");
+            System.out.println("3)Skip post");
+
+            boolean validInput = false;
+            do
+            {
+                String friendsPostOption = Main.input.next();
+                String operationOption;
+                switch (friendsPostOption) {
+                    case "1":
+                        p.reacts++;
+                        System.out.println("1)Do another operation?");
+                        System.out.println("2)Exit");
+
+                        operationOption = Main.input.next();
+                        if(operationOption.equals("2"))validInput = true;
+                        break;
+                    case "2":
+                        //openComments()
+                        System.out.println("1)Do another operation?");
+                        System.out.println("2)Exit");
+
+                        operationOption = Main.input.next();
+                        if(operationOption.equals("2"))validInput = true;
+                        else;
+                        break;
+                    case "3":
+                        idx++;
+                        if(idx<=posts.size())validInput = true;
+                        else
+                        {
+                            System.out.println("You have reached end of posts");
+                            validInput = true;
+                        }
+                        break;
+                    default:
+                        System.out.println("Invalid input, please enter 1 or 2");
+                }
+            }while(!validInput);
+        }
+    }
+
+    public static void viewProfilePosts(ArrayList<Post> posts)
+    {
+        int idx = 1;
+        for (Post p:posts)
+        {
+            System.out.println(p.getPostContent());
+            System.out.println("1)Like");
+            System.out.println("2)View comments");
+            System.out.println("3)Edit post");
+            System.out.println("4)Delete post");
+            System.out.println("5)Skip post");
+
+            boolean validInput = false;
+            do
+            {
+                String friendsPostOption = Main.input.next();
+                String operationOption;
+                switch (friendsPostOption) {
+                    case "1":
+                        p.reacts++;
+                        System.out.println("1)Do another operation?");
+                        System.out.println("2)Exit");
+
+                        operationOption = Main.input.next();
+                        if(operationOption.equals("2"))validInput = true;
+                        break;
+                    case "2":
+                        //openComments()
+                        System.out.println("1)Do another operation?");
+                        System.out.println("2)Exit");
+
+                        operationOption = Main.input.next();
+                        if(operationOption.equals("2"))validInput = true;
+                        break;
+                    case "3":
+                        System.out.println("Enter edited post");
+                        p.setPostContent(Main.input.next());
+                        System.out.println("1)Do another operation?");
+                        System.out.println("2)Exit");
+
+                        operationOption = Main.input.next();
+                        if(operationOption.equals("2"))validInput = true;
+                        break;
+                    case "4":
+                        // search for post in every user
+                        // delete it their
+                        posts.remove(p);
+                        break;
+                    case "5":
+                        idx++;
+                        if(idx<posts.size())validInput = true;
+                        else
+                        {
+                            System.out.println("You have reached end of posts");
+                            validInput = true;
+                        }
+                        break;
+                    default:
+                        System.out.println("Invalid input, please enter 1 or 2");
+                }
+            }while(!validInput);
+        }
+    }
+
+    public static void noFriendsPosts()
+    {
+        System.out.println("No posts to show");
+        System.out.println("1)Add friends?");
+        System.out.println("2)Go back");
+
+        boolean validInput = false;
+        while(!validInput)
+        {
+            String emptyFriendsPosts = Main.input.next();
+            switch (emptyFriendsPosts) {
+                case "1":
+                    //addfriend()
+                    validInput = true;
+                    break;
+                case "2":
+                    validInput = true;
+                    break;
+                default:
+                    System.out.println("Invalid input, please enter 1 or 2");
+            }
+        }
+    }
+
+    public static void noProfilePosts()
+    {
+        System.out.println("No posts to show");
+        System.out.println("1)Create a post");
+        System.out.println("2)Go back");
+
+        String operationOption;
+        boolean validInput = false;
+        while(!validInput)
+        {
+            String emptyFriendsPosts = Main.input.next();
+            switch (emptyFriendsPosts) {
+                case "1":
+                    createPost();
+
+                    System.out.println("1)Do another operation?");
+                    System.out.println("2)Exit");
+
+                    operationOption = Main.input.next();
+                    if(operationOption.equals("2"))validInput = true;
+                    break;
+                case "2":
+                    validInput = true;
+                    break;
+                default:
+                    System.out.println("Invalid input, please enter 1 or 2");
+            }
         }
     }
 
@@ -80,4 +276,5 @@ public class Post {
     public static String getPostContent() {
         return postContent;
     }
+
 }
