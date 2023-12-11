@@ -78,29 +78,29 @@ public abstract class User
 
     public static void userSearch(String searchUsername)
     {
-        boolean found = false;
         for(User u:Main.users)
         {
+            boolean found = false;
             if (searchUsername.equals(u.getUserName()))
             {
                 found = true;
             }
-            else found = false;
             if (found)
             {
                 Main.usersToshow.add(u);
             }
         }
-        for(int i = 0; i < Main.usersToshow.size() ; i++) {
+        for(int i = 0; i < Main.usersToshow.size() ; i++)
+        {
             {
-                System.out.println(Main.usersToshow);
-                User user = Main.usersToshow.get(i);
-                System.out.println((i + 1) + " " + user.getUserName() + " " + user.getEmail());
+                //   System.out.println(Main.usersToshow);
+                //  User user = Main.usersToshow.get(i);
+                System.out.println((i + 1) + " " + Main.usersToshow.get(i).getUserName() + " " + Main.usersToshow.get(i).getEmail());
             }
-//        for(Pair<String, String> x:Main.usersToshow)
-//        {
-//            System.out.println(x.getKey()+ " " +x.getValue());
-//        }
+            //        for(Pair<String, String> x:Main.usersToshow)
+            //        {
+            //            System.out.println(x.getKey()+ " " +x.getValue());
+            //        }
         }
     }
     public static void sendRequest(int index)
@@ -111,14 +111,16 @@ public abstract class User
             if((userIndex) == i)
             {
                 User user = Main.usersToshow.get(i);
-                User.pendingRequests.add(user);
+                LogIn.loggedIn.pendingRequests.add(LogIn.loggedIn);
             }
         }
         System.out.println("Request sent !");
     }
     public static boolean seeRequests(User u)
     {
-        for(int i =0;i<pendingRequests.size();i++)
+        if(u.pendingRequests.isEmpty())
+            System.out.println("you don't have any pending requests");
+        for(int i =0;i<u.pendingRequests.size();i++)
         {
             User x = pendingRequests.get(i);
             System.out.println((i + 1) + " " + x.getUserName() + " " + x.getEmail());
@@ -129,15 +131,23 @@ public abstract class User
         System.out.println("1 - Confirm request");
         System.out.println("2 - Decline request");
         int choice = Main.input.nextInt();
-        if(choice == 1)
+        if (choice == 1)
             return true;
         else
             return false;
+    }
+    public void userSave(User u,User m)
+    {
 
     }
-
     public static void addfriend()
     {
+       if(User.seeRequests(LogIn.loggedIn))
+       {
+       {
+
+       }
+        //
         //        1. omar omarkhalid@hotmail.com
         //        2. omar omar@hotmail.com
         //
@@ -157,6 +167,4 @@ public abstract class User
         //        if decline then delete the chosen index from the pending request array
         //        if he confirms then create a new object from the friend class
     }
-
-
 }

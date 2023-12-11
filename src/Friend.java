@@ -1,7 +1,10 @@
 public class Friend extends User
 {
+
     public Friend()
-    {}
+    {
+        
+    }
 
     private boolean restricted;
 
@@ -14,4 +17,5 @@ public class Friend extends User
     {
         this.restricted = restricted;
     }
+
 }
