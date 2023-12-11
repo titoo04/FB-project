@@ -1,2 +1,3 @@
-public class RegularFriend extends Friend{
+public class RegularFriend extends Friend
+{
 }

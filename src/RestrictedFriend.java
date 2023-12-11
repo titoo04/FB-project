@@ -1,2 +1,3 @@
-public class RestrictedFriend extends Friend{
+public class RestrictedFriend extends Friend
+{
 }

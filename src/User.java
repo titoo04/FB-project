@@ -13,7 +13,8 @@ public abstract class User
     public ArrayList<Post> friendsPosts = new ArrayList<>();
     public static ArrayList<Friend> friends = new ArrayList<>();
 
-    public User(int ID, String userName, String email, String passWord, String gender, String birthDate) {
+    public User(int ID, String userName, String email, String passWord, String gender, String birthDate)
+    {
         this.ID = ID;
         this.userName = userName;
         this.email = email;

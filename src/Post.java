@@ -8,7 +8,7 @@ public class Post {
     private int privacyOptions;
 
     private int reacts = 0;
-    private ArrayList <Comment> comments= new ArrayList<>();
+    public static ArrayList <Comment> comments= new ArrayList<>();
     private ArrayList <Integer> taggedUsers = new ArrayList<>();
     public Post(String content,int privacyOptions)//,tags)
     {
@@ -29,23 +29,12 @@ public class Post {
         switch (privacyNum)
         {
             case 1:
-//                //add post to all users
-//                for(User u:Main.users)
-//                {
-//                    u.feed.add(post);
-//                }
                 //add friends of user (all)
                 for(Friend f:User.friends)
                 {
                     f.feed.add(post);
                 }
             case 2:
-//                  for(Friend f:User.friends)
-//                  {
-//                      f.feed.add(post);
-//                      f.friendsPosts.add(post);
-//                  }
-
                 //add to friends of user (not restricted)
                 for(Friend f:User.friends)
                 {
@@ -113,19 +102,31 @@ public class Post {
             System.out.println("2)View comments");
             System.out.println("3)Skip post");
 
+            int ctr = 0;
             boolean validInput = false;
             do
             {
+                if(ctr>0) System.out.println("1)Like 2)View comments 3)Skip post");
                 String friendsPostOption = Main.input.next();
                 String operationOption;
                 switch (friendsPostOption) {
                     case "1":
                         p.reacts++;
                         System.out.println("1)Do another operation?");
-                        System.out.println("2)Exit");
+                        System.out.println("2)Next post");
+                        //System.out.println("3)Return to profile");
 
                         operationOption = Main.input.next();
-                        if(operationOption.equals("2"))validInput = true;
+                        if(operationOption.equals("1")) ctr++;
+                        else if(operationOption.equals("2"))
+                        {
+                            idx++;
+                            if(idx<=posts.size())validInput = true;
+                            else {
+                                System.out.println("You have reached end of posts");
+                                validInput = true;
+                            }
+                        }
                         break;
                     case "2":
                         //openComments()
@@ -133,8 +134,16 @@ public class Post {
                         System.out.println("2)Exit");
 
                         operationOption = Main.input.next();
-                        if(operationOption.equals("2"))validInput = true;
-                        else;
+                        if(operationOption.equals("1")) ctr++;
+                        else if(operationOption.equals("2"))
+                        {
+                            idx++;
+                            if(idx<=posts.size())validInput = true;
+                            else {
+                                System.out.println("You have reached end of posts");
+                                validInput = true;
+                            }
+                        }
                         break;
                     case "3":
                         idx++;
@@ -164,19 +173,31 @@ public class Post {
             System.out.println("4)Delete post");
             System.out.println("5)Skip post");
 
+            int ctr = 0;
             boolean validInput = false;
             do
             {
+                if(ctr>0) System.out.println("1)Like 2)View comments 3)Edit post 4)Delete post 5)Skip post");
                 String friendsPostOption = Main.input.next();
                 String operationOption;
                 switch (friendsPostOption) {
                     case "1":
                         p.reacts++;
                         System.out.println("1)Do another operation?");
-                        System.out.println("2)Exit");
+                        System.out.println("2)Next post");
 
                         operationOption = Main.input.next();
-                        if(operationOption.equals("2"))validInput = true;
+                        if(operationOption.equals("1")) ctr++;
+                        else if(operationOption.equals("2"))
+                        {
+                            idx++;
+                            if(idx<posts.size())validInput = true;
+                            else
+                            {
+                                System.out.println("You have reached end of posts");
+                                validInput = true;
+                            }
+                        }
                         break;
                     case "2":
                         //openComments()
@@ -184,7 +205,17 @@ public class Post {
                         System.out.println("2)Exit");
 
                         operationOption = Main.input.next();
-                        if(operationOption.equals("2"))validInput = true;
+                        if(operationOption.equals("1")) ctr++;
+                        else if(operationOption.equals("2"))
+                        {
+                            idx++;
+                            if(idx<posts.size())validInput = true;
+                            else
+                            {
+                                System.out.println("You have reached end of posts");
+                                validInput = true;
+                            }
+                        }
                         break;
                     case "3":
                         System.out.println("Enter edited post");
@@ -193,7 +224,17 @@ public class Post {
                         System.out.println("2)Exit");
 
                         operationOption = Main.input.next();
-                        if(operationOption.equals("2"))validInput = true;
+                        if(operationOption.equals("1")) ctr++;
+                        else if(operationOption.equals("2"))
+                        {
+                            idx++;
+                            if(idx<posts.size())validInput = true;
+                            else
+                            {
+                                System.out.println("You have reached end of posts");
+                                validInput = true;
+                            }
+                        }
                         break;
                     case "4":
                         // search for post in every user
