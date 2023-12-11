@@ -8,7 +8,7 @@ public class Main
     static Scanner input = new Scanner(System.in);
     public static int ctr = 0;
     public static ArrayList<User> users = new ArrayList<>();
-    public static ArrayList<Pair<String, String>> usersToshow= new ArrayList<>();
+    public static ArrayList<User> usersToshow= new ArrayList<>();
 
     public static void main(String[] args)
     {
@@ -25,7 +25,6 @@ public class Main
             String email = Main.input.next();
             System.out.println("Enter password: ");
             String password = Main.input.next();
-
             if(LogIn.login(email,password));
             {
                 String signinChoice="y";
@@ -48,45 +47,28 @@ public class Main
                             System.out.println("Enter username you want to search for");
                             String Usernametosearch=input.next();
                             User.userSearch(Usernametosearch);
+                            System.out.println("Choose the user who you want to send a friend request");
+                            int index = input.nextInt();
+                            User.sendRequest(index);
                             break;
                         case 3:
-                            if(LogIn.loggedIn.friendsPosts.isEmpty())
-                            {
-                                Post.noFriendsPosts();
-                            }
-                            else
-                            {
-                                Post.viewPosts(LogIn.loggedIn.friendsPosts);
-                            }
-                            System.out.println("Do you want to do another operation ? (y/n)");
-                            signinChoice=input.next();
+                            //
                             break;
                         case 4:
-                            Profile profile = new Profile();
+                            Profile profile=new Profile();
                             profile.viewProfile(LogIn.loggedIn);
-                            if(LogIn.loggedIn.postsCreated.isEmpty())
-                            {
-                                Post.noProfilePosts();
-                            }
-                            else
-                            {
-                                Post.viewProfilePosts(LogIn.loggedIn.postsCreated);
-                            }
+                            profile.    viewPosts(LogIn.loggedIn);
                             System.out.println("Do you want to do another operation ? (y/n)");
                             signinChoice=input.next();
                             break;
                         case 5:
-                            if(LogIn.loggedIn.feed.isEmpty())
-                            {
-                                Post.noFriendsPosts();
-                            }
-                            else
-                            {
-                                Post.viewPosts(LogIn.loggedIn.feed);
-                            }
-                            System.out.println("Do you want to do another operation ? (y/n)");
+                            //view feed
                             signinChoice=input.next();
                             break;
+                        //  case 6:
+                        //  if(User.seeRequests(LogIn.loggedIn))
+                        //  System.out.println(1);
+                        //  else System.out.println(0);
                     }
 
 

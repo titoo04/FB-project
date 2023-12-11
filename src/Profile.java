@@ -1,9 +1,7 @@
 public class Profile
 {
-
     public Profile()
     {
-
     }
     public void viewProfile(User u)
     {
@@ -12,10 +10,14 @@ public class Profile
         System.out.println(u.getGender());
         System.out.println(u.getEmail());
     }
-
+    public void viewPosts(User u)
+    {
+        for(Post x: LogIn.loggedIn.postsCreated)
+        {
+            System.out.println(x.getPostContent());
+        }
+    }
     public void viewFriendsList()
     {
-
     }
-
 }
