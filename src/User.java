@@ -13,6 +13,7 @@ public abstract class User
     public static ArrayList<User> pendingRequests = new ArrayList<>();
     public ArrayList<Post> friendsPosts = new ArrayList<>();
     public static ArrayList<Friend> friends = new ArrayList<>();
+    public ArrayList<Conversation> convos = new ArrayList<>();
 
     public User(int ID, String userName, String email, String passWord, String gender, String birthDate)
     {

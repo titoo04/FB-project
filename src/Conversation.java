@@ -127,6 +127,7 @@ public class Conversation
                 System.out.println("Press 2) to add participants");
                 System.out.println("Press 3) to skip to next conversation");
                 System.out.println("Press 4) to add conversation");
+                System.out.println("Press any other key to return to main menu");
                 String choice = Main.input.next();
                 switch (choice)
                 {
@@ -172,6 +173,7 @@ public class Conversation
                 }
         }
     }
+
     public void sendMessage(Conversation conversation, User user)
     {
         if (conversation.participants.size()!=1)
