@@ -24,23 +24,29 @@ public class Main
             String password = Main.input.next();
 
             LogIn.login(email,password);
-
-        }else if(choice.equals("2")){
+        }
+        else if(choice.equals("2"))
+        {
             Register.registerUser();
             main(args);
-        }//else if(choice.eguals("3")){
+        }
+        //else if(choice.eguals("3")){
         //    return ;
         //}
-        else {
+        else
+        {
             System.out.println("invalid input pls enter again");
             main(args);
         }
+        //write()
     }
 
-    private static void loadUsersFromFile() {
+    private static void loadUsersFromFile()
+    {
         try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
+            {
                 String[] userInfo = line.split(" ");
 
                 RegisteredUser user = new RegisteredUser(

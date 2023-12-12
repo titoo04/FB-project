@@ -13,7 +13,7 @@ public class LogIn {
 
     }
 
-    public static Boolean Validate(String email, String password)
+    public static Boolean Validate (String email, String password)
     {
         for (User u : Main.users)
         {
@@ -21,7 +21,6 @@ public class LogIn {
             {
              Welcome w= new Welcome(u);
             }
-
         }
         return false;
     }

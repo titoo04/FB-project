@@ -12,7 +12,6 @@ public class Welcome
         System.out.println("Press 2)View your profile");
         System.out.println("Press 3)Search for something");
         System.out.println("Press 4) to open you conversations");
-
         String choice= Main.input.next();
         switch (choice)
         {
