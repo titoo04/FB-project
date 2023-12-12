@@ -7,12 +7,11 @@ public class Welcome
     }
     public void displayMenu(User x)
     {
-        System.out.println("Welcome Back"+ x.getUserName());
+        System.out.println("Welcome Back "+ x.getUserName());
         System.out.println("Press 1)Show feed");
         System.out.println("Press 2)View your profile");
         System.out.println("Press 3)Search for something");
         System.out.println("Press 4) to open you conversations");
-
         String choice= Main.input.next();
         switch (choice)
         {
@@ -30,6 +29,11 @@ public class Welcome
             {
                 searchBar(x);
                 break;
+            }
+            case "4":
+            {
+            openConversations(x);
+            break;
             }
             default:
             {
@@ -52,6 +56,13 @@ public class Welcome
     {
         System.out.println('3');
         //        Search sch= new Search(x);
+    }
+    public void openConversations(User x)
+    {
+        Conversation conversation= new Conversation();
+        conversation.LoadConversationsFromFile(Main.users);
+         conversation.DisplayConvos(x);
+        conversation.writeConversationsInFile(Main.users);
     }
     public void invalidSelection(User x)
     {
