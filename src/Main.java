@@ -74,7 +74,16 @@ public class Main
                     User.sendRequest(index);
                     break;
                 case "3":
-                    //
+                    if(LogIn.loggedIn.friendsPosts.isEmpty())
+                    {
+                        Post.noFriendsPosts();
+                    }
+                    else
+                    {
+                        Post.viewPosts(LogIn.loggedIn.friendsPosts);
+                    }
+                    System.out.println("Do you want to do another operation ? (y/n)");
+                    operationChoice=input.next();
                     break;
                 case "4":
                     Profile profile=new Profile();
@@ -85,7 +94,16 @@ public class Main
                     break;
                 case "5":
                     //view feed
-                    operationChoice = input.next();
+                    if(LogIn.loggedIn.feed.isEmpty())
+                    {
+                        Post.noFriendsPosts();
+                    }
+                    else
+                    {
+                        Post.viewPosts(LogIn.loggedIn.feed);
+                    }
+                    System.out.println("Do you want to do another operation ? (y/n)");
+                    operationChoice=input.next();
                     break;
                 case "6":
                     boolean addfriend;

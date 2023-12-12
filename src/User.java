@@ -144,7 +144,6 @@ public abstract class User
     {
        if(User.seeRequests(LogIn.loggedIn))
        {
-       {
 
        }
         //
