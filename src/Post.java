@@ -1,19 +1,21 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class Post {
     private int ID;
-
-    private String postContent;
+    public static String postContent;
     private int userId;
-    private int privacyOptions;
+    public static int privacyOptions;
     private int reacts = 0;
-    public  ArrayList <Comment> comments= new ArrayList<>();
+    public static ArrayList <Comment> comments= new ArrayList<>();
     private ArrayList <Integer> taggedUsers = new ArrayList<>();
 
     public Post(String content,int privacyOptions)//,tags)
     {
         this.postContent=content;
-        //this.ID=User.feed.size()+1;
+        this.ID=User.feed.size()+1;
         this.privacyOptions=privacyOptions;
         this.reacts=0;
     }
@@ -29,7 +31,6 @@ public class Post {
                 {
                     f.feed.add(0, p);
                 }
-                LogIn.loggedIn.postsCreated.add(0, p);
                 break;
             case 2:
                 //add to friends of user (not restricted)
@@ -37,10 +38,8 @@ public class Post {
                 {
                     if(!f.isRestricted()) f.feed.add(0, p);
                 }
-                LogIn.loggedIn.postsCreated.add(0, p);
                 break;
-            case 3:
-                LogIn.loggedIn.postsCreated.add(0, p); // add post to profile
+
 
         }
     }
@@ -132,7 +131,7 @@ public class Post {
                         break;
                     case "2":
                         //openComments
-                        Comment.viewComments(p);
+                        Comment.viewComments();
                         System.out.println("1)Do another operation?");
                         System.out.println("2)Exit");
 
@@ -177,9 +176,10 @@ public class Post {
             System.out.println("2)View comments");
             System.out.println("3)Edit post");
             System.out.println("4)Skip post");
+            System.out.println("5)Return to Main menu");
 
             int ctr = 0;
-            boolean validInput = false;
+            boolean validInput = false,returnTomenu=false;
             do
             {
                 if(ctr>0) System.out.println("1)Like 2)View comments 3)Edit post 4)Skip post");
@@ -187,6 +187,7 @@ public class Post {
                 String operationOption;
                 switch (friendsPostOption)
                 {
+
                     case "1":
                         p.reacts++;
                         System.out.println("1)Do another operation?");
@@ -206,7 +207,7 @@ public class Post {
                         }
                         break;
                     case "2":
-                        Comment.viewComments(p);
+                        Comment.viewComments();
                         System.out.println("1)Do another operation?");
                         System.out.println("2)Exit");
 
@@ -251,9 +252,15 @@ public class Post {
                             validInput = true;
                         }
                         break;
+                    case "5":
+                        validInput =true;
+                        returnTomenu=true;
+                        break;
                     default:
-                        System.out.println("Invalid input, please enter 1 or 2");
+                        System.out.println("Invalid input ");//hena
                 }
+                if (returnTomenu)
+                    break;
             }
             while(!validInput);
         }
@@ -297,22 +304,22 @@ public class Post {
             switch (emptyFriendsPosts) {
                 case "1":
                     System.out.println("What's on your mind");
-                    String postContent = Main.input.next();
+                    Main.input.nextLine();
+                    String postContent = Main.input.nextLine();
                     //makeTags();
                     int privacyNum = Post.privacy();
                     Post post = new Post(postContent, privacyNum);
                     //,tags );
                     post.createPost(post);
-
-                    System.out.println("1)Do another operation?");
-                    System.out.println("2)Exit");
-
-                    operationOption = Main.input.next();
-                    if(operationOption.equals("2"))validInput = true;
-                    break;
+//                    System.out.println("1)Do another operation?");
+//                    System.out.println("2)Exit");
+//                    operationOption = Main.input.next();
+//                    if(operationOption.equals(""))
+//                    if(operationOption.equals("2"))validInput = true;
+//                    break;
                 case "2":
                     validInput = true;
-                    break;
+                        break;
                 default:
                     System.out.println("Invalid input, please enter 1 or 2");
             }
@@ -340,6 +347,44 @@ public class Post {
     }
 
     public void setReacts(int reacts) {
-        this.reacts = reacts;
+        this.reacts =reacts;
+}
+
+    public static void writePostToFile() {
+        try {
+            FileWriter fileWriter = new FileWriter("Post.txt", false);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            for (User user:Main.users)
+            {
+                bufferedWriter.write("User Id:"+user.getID());
+                bufferedWriter.newLine();
+                for (Post post:user.postsCreated)
+                {
+                    for (Comment comment : post.comments)
+                    {
+                        bufferedWriter.write("Post Id: " +post.ID);
+                        bufferedWriter.write("Post:" + post.postContent + "\n");
+                        bufferedWriter.write("Privacy option: " + post.privacyOptions + "\n");
+                        bufferedWriter.write("Comment: " + comment.getContent() + "\n");
+                        bufferedWriter.write("Reacts: " + comment.reacts + "\n");
+
+                        for (Pair<String, Integer> reply : comment.replies)
+                        {
+                            bufferedWriter.write("Reply: " + reply.getKey() + "\n");
+                            bufferedWriter.write("Reply Reacts: " + reply.getValue() + "\n");
+                        }
+                        bufferedWriter.write("\n");
+                    }
+                }
+            }
+            bufferedWriter.write("done");
+
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
 }

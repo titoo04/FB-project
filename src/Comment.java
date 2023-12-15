@@ -1,10 +1,12 @@
+import java.io.*;
 import java.util.*;
 
-public class Comment {
+public class Comment
+{
     private int ID;
     private String content;
-    private  ArrayList<Pair<String, Integer>> replies= new ArrayList<>();
-    private int reacts = 0;
+    public static ArrayList<Pair<String, Integer>> replies= new ArrayList<>();
+    public int reacts = 0;
     public String getContent()
     {
         return content;
@@ -15,12 +17,25 @@ public class Comment {
     }
     public Comment(String content)
     {
-        this.content=content;
+      this.content=content;
     }
 
-    public static void viewComments(Post p)
+//    protected void loadPostsFromFile(ArrayList <Comment> comments)
+//    {
+//        try (BufferedReader reader = new BufferedReader(new FileReader("Posts.txt")))
+//        {
+//
+//        }
+//        catch(IOException e)
+//        {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+    public static void viewComments()
     {
-        if (p.comments.isEmpty())
+        if (Post.comments.isEmpty())
         {
             System.out.println("No comments ");
             boolean validInput = false;
@@ -31,11 +46,12 @@ public class Comment {
                 switch(commentChoice.toLowerCase())
                 {
                     case "y":
-                        String writeComment=Main.input.next();
+                        Main.input.nextLine();
+                        String writeComment=Main.input.nextLine();
                         Comment comment=new Comment(writeComment);
-                        p.comments.add(comment);
+                        Post.comments.add(comment);
                         validInput = true;
-                        viewComments(p);
+                        viewComments();
                         break;
                     case "n":
                         validInput = true;
@@ -50,7 +66,7 @@ public class Comment {
         {
             int idx = 0;
             boolean backToPost = false;
-            for (Comment comment : p.comments)
+            for (Comment comment : Post.comments)
             {
                 if(backToPost) break;
                 System.out.println(comment.getContent());
@@ -70,14 +86,14 @@ public class Comment {
                     {
                         case "1": //Reacts
                             comment.reacts++;
+//                            readPostFromFile();
                             System.out.println("1)Do another operation?");
                             System.out.println("2)Next comment ");
                             operationOption1 = Main.input.next();
-                            if(operationOption1.equals("1")) cnt++;//ezay hy react martein keda el mafrood ne3mel boolean eno yehseel el react
-                            else if(operationOption1.equals("2"))
-                            {
+                            if(operationOption1.equals("1")) cnt++;
+                            else if(operationOption1.equals("2")){
                                 validInput = true;
-                                if(++idx == p.comments.size())
+                                if(++idx == Post.comments.size())
                                 {
                                     System.out.println("You have reached the last comment");
                                 }
@@ -87,8 +103,9 @@ public class Comment {
                             System.out.println("Write a reply...");
                             String writeReply=Main.input.next();
                             Pair<String,Integer> reply = new Pair<>(writeReply,0);
-                            comment.replies.add(reply);
-                            viewReplies(comment); //view Replies
+                            replies.add(reply);
+
+//                            readPostFromFile();
                             System.out.println("1)Do another operation?");
                             System.out.println("2)Next comment ");
                             operationOption1 = Main.input.next();
@@ -96,14 +113,14 @@ public class Comment {
                             else if(operationOption1.equals("2"))
                             {
                                 validInput = true;
-                                if(++idx == p.comments.size())
+                                if(++idx == Post.comments.size())
                                 {
                                     System.out.println("You have reached the last comment");
                                 }
                             }
                             break;
                         case "3": //Skip Comment
-                            if(++idx == p.comments.size())
+                            if(++idx == Post.comments.size())
                             {
                                 System.out.println("You have reached the last comment");
                             }
@@ -118,103 +135,25 @@ public class Comment {
         }
     }
 
-    public static void viewReplies(Comment c)
+
+    public static void readPostFromFile()
     {
-        if (c.replies.isEmpty())
+        try
         {
-            System.out.println("No Replies ");
-            boolean validInput = false;
-            System.out.println("Write a reply? (y/n) ");
-            do
+            FileReader fileReader = new FileReader("Post.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null)
             {
-                String replyChoice = Main.input.next();
-                switch(replyChoice.toLowerCase())
-                {
-                    case "y":
-                        String writeReply=Main.input.next();
-                        Pair<String,Integer> rep=new Pair<>(writeReply,0);
-                        c.replies.add(rep);
-                        validInput = true;
-                        viewReplies(c);
-                        break;
-                    case "n":
-                        validInput = true;
-                        break;
-                    default:
-                        System.out.println("Invalid input, please enter (y/n)");
-                }
+                System.out.println(line);
             }
-            while (!validInput);
+
+            bufferedReader.close();
         }
-        else
+        catch (IOException e)
         {
-            int idx = 0;
-            boolean backToComment = false;
-            for (Pair<String,Integer> r : c.replies)
-            {
-                if(backToComment) break;
-                System.out.println(r.getKey());
-                System.out.println("1)React ");
-                System.out.println("2)Reply ");
-                System.out.println("3)Skip reply ");
-                System.out.println("4)Return to comment ");
-
-                int cnt = 0;
-                boolean validInput = false;
-                do
-                {
-                    if(cnt>0) System.out.println("1)React 2)Reply 3)Skip reply 4)Return to comment ");
-                    String friendsReplyOption = Main.input.next();
-                    String operationOption1;
-                    switch (friendsReplyOption)
-                    {
-                        case "1": //Reacts
-                            r.setValue(r.getValue() + 1);
-                            System.out.println("1)Do another operation?");
-                            System.out.println("2)Next reply ");
-                            operationOption1 = Main.input.next();
-                            if(operationOption1.equals("1")) cnt++;
-                            else if(operationOption1.equals("2"))
-                            {
-                                validInput = true;
-                                if(++idx > c.replies.size())
-                                {
-                                    System.out.println("You have reached the last reply ");
-                                }
-                            }
-                            break;
-                        case "2": //Reply
-                            System.out.println("Write a reply...");
-                            String writeReply=Main.input.next();
-                            Pair<String,Integer> reply = new Pair<>(writeReply,0);
-                            c.replies.add(reply);
-
-                            System.out.println("1)Do another operation?");
-                            System.out.println("2)Next reply ");
-                            operationOption1 = Main.input.next();
-                            if(operationOption1.equals("1")) cnt++;
-                            else if(operationOption1.equals("2"))
-                            {
-                                validInput = true;
-                                if(++idx == c.replies.size())
-                                {
-                                    System.out.println("You have reached the last reply ");
-                                }
-                            }
-                            break;
-                        case "3": //Skip Comment
-                            if(++idx == c.replies.size())
-                            {
-                                System.out.println("You have reached the last reply ");
-                            }
-                            continue;
-                        case "4": //Return
-                            validInput= true;
-                            backToComment = true;
-                    }
-                }
-                while (!validInput);
-            }
+            e.printStackTrace();
         }
     }
 }

@@ -1,23 +1,22 @@
 public class Profile
 {
     public Profile()
-    {
-    }
+    {}
     public void viewProfile(User u)
     {
-        System.out.println(u.getUserName());
-        System.out.println(u.getBirthDate());
-        System.out.println(u.getGender());
-        System.out.println(u.getEmail());
+        System.out.println("Username: " +u.getUserName());
+        System.out.println("Birthdate: " +u .getBirthDate());
+        System.out.println("Gender: " +u.getGender());
+        System.out.println("Email: " +u.getEmail());
     }
-    public void viewPosts(User u)
+    public void viewFriendsList(User u)
     {
-        for(Post x: LogIn.loggedIn.postsCreated)
+        System.out.println(u.friends.size());
+        System.out.println("Your friends :");
+        for(int i =0;i<LogIn.loggedIn.friends.size();i++)
         {
-            System.out.println(x.getPostContent());
+            User friend = LogIn.loggedIn.friends.get(i);
+            System.out.println(friend.getUserName());
         }
-    }
-    public void viewFriendsList()
-    {
-    }
+}
 }

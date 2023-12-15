@@ -20,7 +20,8 @@ public class Pair<K,V> extends Object
         this.key = key;
     }
 
-    public void setValue(V value) {
+    public void setValue(V value)
+    {
         this.value = value;
     }
 
@@ -29,4 +30,6 @@ public class Pair<K,V> extends Object
     {
         return "(" + key + ", " + value + ")";
     }
+
+
 }

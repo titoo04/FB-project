@@ -162,6 +162,6 @@ public class Register
             }
         } catch (ParseException e) {
             return false;
-        }
+ }
     }
 }

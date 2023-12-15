@@ -67,12 +67,15 @@ public class Main
                 case "1":
                     // create post
                     System.out.println("What's on your mind");
-                    String postContent = Main.input.next();
+                    Main.input.nextLine();
+                    String postContent = Main.input.nextLine();
                     //makeTags();
                     int privacyNum = Post.privacy();
                     Post post = new Post(postContent, privacyNum);
                     //,tags );
                     post.createPost(post);
+                    LogIn.loggedIn.postsCreated.add(post);// add post to profile
+                    post.writePostToFile();
                     break;
                 case "2":
                     System.out.println("Enter username you want to search for");
@@ -151,6 +154,6 @@ public class Main
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
+ }
+}
 }
