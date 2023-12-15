@@ -8,10 +8,13 @@ public abstract class User
     private String passWord;
     private String gender;
     private String birthDate;
-    public ArrayList<Post> postsCreated = new ArrayList<>();
-    public ArrayList<Post> feed = new ArrayList<>();
+    public static ArrayList<Post> postsCreated = new ArrayList<>();
+    public static ArrayList<User> friends = new ArrayList<>();
+    public static ArrayList<User> restrictedFriends = new ArrayList<>();
+    public static ArrayList<User> regularFriends = new ArrayList<>();
     public static ArrayList<User> pendingRequests = new ArrayList<>();
-    public static ArrayList<Friend> friends = new ArrayList<>();
+    public ArrayList<Post> feed = new ArrayList<>();
+    public ArrayList<Post> friendsPosts = new ArrayList<>();
     public ArrayList<Conversation> convos = new ArrayList<>();
 
     public User(int ID, String userName, String email, String passWord, String gender, String birthDate)
@@ -91,14 +94,9 @@ public abstract class User
         for(int i = 0; i < Main.usersToshow.size() ; i++)
         {
             {
-                //   System.out.println(Main.usersToshow);
-                //  User user = Main.usersToshow.get(i);
                 System.out.println((i + 1) + " " + Main.usersToshow.get(i).getUserName() + " " + Main.usersToshow.get(i).getEmail());
             }
-            //        for(Pair<String, String> x:Main.usersToshow)
-            //        {
-            //            System.out.println(x.getKey()+ " " +x.getValue());
-            //        }
+
         }
     }
     public static void sendRequest(int index)
@@ -109,59 +107,81 @@ public abstract class User
             if((userIndex) == i)
             {
                 User user = Main.usersToshow.get(i);
-                LogIn.loggedIn.pendingRequests.add(LogIn.loggedIn);
+                user.pendingRequests.add(LogIn.loggedIn);
             }
         }
         System.out.println("Request sent !");
     }
-    public static boolean seeRequests(User u)
-    {
-        if(u.pendingRequests.isEmpty())
-            System.out.println("you don't have any pending requests");
-        for(int i =0;i<u.pendingRequests.size();i++)
-        {
-            User x = pendingRequests.get(i);
-            System.out.println((i + 1) + " " + x.getUserName() + " " + x.getEmail());
+    public static User seeRequests(User u) {
+        if (u.pendingRequests.isEmpty()) {
+            System.out.println("You don't have any pending requests.");
+            return null;
         }
-        System.out.println("Choose the user you want to select");
-        int x = Main.input.nextInt();
-        int index = x-1;
+
+        for (int i = 0; i < u.pendingRequests.size(); i++) {
+            User requester = u.pendingRequests.get(i);
+            System.out.println((i + 1) + " " + requester.getUserName() + " " + requester.getEmail());
+        }
+
+        System.out.println("Choose the user you want to select:");
+        int choice = Main.input.nextInt();
+
+        if (choice < 1 || choice > u.pendingRequests.size()) {
+            System.out.println("Invalid choice. Please choose a valid user.");
+            return null;
+        }
+
+        int index = choice - 1;
+
         System.out.println("1 - Confirm request");
         System.out.println("2 - Decline request");
-        int choice = Main.input.nextInt();
-        if (choice == 1)
-            return true;
+
+        int actionChoice = Main.input.nextInt();
+
+        User selectedUser = u.pendingRequests.get(index);
+        if (actionChoice == 1)
+        {
+            // Confirmation logic
+            System.out.println("Confirmed request from " + selectedUser.getUserName());
+            u.pendingRequests.remove(index);  // Remove from pending requests after confirmation
+            return selectedUser;
+        } else if (actionChoice == 2)
+        {
+            // Decline logic
+            System.out.println("Declined request from " + selectedUser.getUserName());
+            u.pendingRequests.remove(index);  // Remove from pending requests after decline
+            return null;
+        } else {
+            System.out.println("Invalid choice. No action taken.");
+            return null;
+        }
+    }
+    static void addFriend(User friend)
+    {
+        if(!LogIn.loggedIn.friends.contains(friend))
+        {
+            LogIn.loggedIn.friends.add(friend);
+            friend.friends.add(LogIn.loggedIn);
+            System.out.println("1. Add as a restricted friend (Can see the public posts only)");
+            System.out.println("2. Add as a regular friend(Can see all posts)");
+            int friendChoice = Main.input.nextInt();
+            switch (friendChoice)
+            {
+                case 1:
+                    LogIn.loggedIn.restrictedFriends.add(friend);
+                    friend.restrictedFriends.add(LogIn.loggedIn);
+                    System.out.println("Added as restricted friend successfully !");
+                    break;
+                case 2:
+                    LogIn.loggedIn.regularFriends.add(friend);
+                    friend.regularFriends.add(LogIn.loggedIn);
+                    System.out.println("Added as regular friend successfully !");
+                    break;
+                default:
+                    System.out.println("Invalid choice. No friend added.");
+            }
+        }
         else
-            return false;
-    }
-    public void userSave(User u,User m)
-    {
-
-    }
-    public static void addfriend()
-    {
-       if(User.seeRequests(LogIn.loggedIn))
-       {
-
-       }
-        //
-        //        1. omar omarkhalid@hotmail.com
-        //        2. omar omar@hotmail.com
-        //
-        //        addFriend Task
-        //
-        //
-        //
-        //        Steps :
-        //
-        //        user search for a username --> done
-        //        fill array with usernames and emails assigned to them --> done
-        //        print the array indexed to its size --> done
-        //        let the user who searches choose the index he wants to add --> done
-        //        when he chooses the index he wants to add his username should be passed to the array of pending requestes to the other user -- > done
-        //        the other user sees the pending requests array indexed --> done
-        //        the other uses chooses wether he wants to confirm the request or decline --> done
-        //        if decline then delete the chosen index from the pending request array
-        //        if he confirms then create a new object from the friend class
+            System.out.println(LogIn.loggedIn.getUserName()+ " is already friends with" + friend.getUserName());
     }
 }
