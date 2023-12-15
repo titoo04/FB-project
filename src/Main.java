@@ -5,7 +5,6 @@ import java.util.regex.*;
 
 public class Main
 {
-
     static Scanner input = new Scanner(System.in);
     public static int ctr = 0;
     public static ArrayList<User> users = new ArrayList<>();
@@ -33,6 +32,10 @@ public class Main
             {
                 mainMenu(args);
             }
+            else
+            {
+                LogIn.failed();
+            }
         }
         else if(choice.equals("2"))
         {
@@ -56,7 +59,6 @@ public class Main
             System.out.println("2.Search for a user");
             System.out.println("3.View feed");
             System.out.println("4.View your profile");
-            System.out.println("6.View your pending requests");
             System.out.println("7.Open your conversations");
             System.out.println("8.Logout");
             operationChoice=input.next();
@@ -64,8 +66,13 @@ public class Main
             {
                 case "1":
                     // create post
-                    Post.createPost();
-                    operationChoice=input.next();
+                    System.out.println("What's on your mind");
+                    String postContent = Main.input.next();
+                    //makeTags();
+                    int privacyNum = Post.privacy();
+                    Post post = new Post(postContent, privacyNum);
+                    //,tags );
+                    post.createPost(post);
                     break;
                 case "2":
                     System.out.println("Enter username you want to search for");
@@ -84,25 +91,29 @@ public class Main
                     {
                         Post.viewPosts(LogIn.loggedIn.feed);
                     }
-                    System.out.println("Do you want to do another operation ? (y/n)");
-                    operationChoice = input.next();
                     break;
                 case "4":
                     Profile profile=new Profile();
                     profile.viewProfile(LogIn.loggedIn);
-                    profile.viewPosts(LogIn.loggedIn);
-                    profile.viewFriendsList(LogIn.loggedIn);
-                    System.out.println("Do you want to do another operation ? (y/n)");
-                    operationChoice = input.next();
+                    if(LogIn.loggedIn.postsCreated.isEmpty())
+                    {
+                        Post.noProfilePosts();
+                    }
+                    else
+                    {
+                        Post.viewProfilePosts(LogIn.loggedIn.postsCreated);
+                    }
                     break;
                 case "5":
                     //
-                    System.out.println("Do you want to do another operation ? (y/n)");
-                    operationChoice=input.next();
                     break;
                 case "6":
-
-                    User.addFriend(User.seeRequests(LogIn.loggedIn));
+                    boolean addfriend;
+                    User.seeRequests(LogIn.loggedIn);
+                    if(User.seeRequests(LogIn.loggedIn))
+                        addfriend = true;
+                    else
+                        addfriend = false;
                     break;
                 case "7":
                     Conversation conversation= new Conversation();
@@ -117,7 +128,7 @@ public class Main
                     System.out.println("Invalid Selection Please check your selection");
                     mainMenu(args);
             }
-            System.out.println("do you want to do another operation?");
+            System.out.println("do you want to do another operation? (y/n)");
             operationChoice=input.next();
         }while(operationChoice.equals("y"));
     }

@@ -15,6 +15,15 @@ public class Pair<K,V> extends Object
     public V getValue() {
         return value;
     }
+
+    public void setKey(K key) {
+        this.key = key;
+    }
+
+    public void setValue(V value) {
+        this.value = value;
+    }
+
     @Override
     public String toString()
     {

@@ -39,7 +39,7 @@ public class Register
             newUser.setBirthDate(Main.input.next());
         }
 
-        while(!validPassword(newUser)){
+        while(!validPassword(newUser.getPassWord())){
             System.out.println("Please enter another password");
             newUser.setPassWord(Main.input.next());
         }
@@ -94,23 +94,23 @@ public class Register
         return matcher.matches();
     }
 
-    public static boolean validPassword(RegisteredUser u) {
-        if (u.getPassWord().length() < 8 || u.getPassWord().length() > 16) {
+    public static boolean validPassword(String passWord) {
+        if (passWord.length() < 8 || passWord.length() > 16) {
             System.out.println("Password length must be between 8 and 16 characters.");
             return false;
         }
 
-        if (!containsUppercase(u.getPassWord())) {
+        if (!containsUppercase(passWord)) {
             System.out.println("Password must contain at least one uppercase letter.");
             return false;
         }
 
-        if (!containsLowercase(u.getPassWord())) {
+        if (!containsLowercase(passWord)) {
             System.out.println("Password must contain at least one lowercase letter.");
             return false;
         }
 
-        if (!containsDigit(u.getPassWord())) {
+        if (!containsDigit(passWord)) {
             System.out.println("Password must contain at least one digit.");
             return false;
         }

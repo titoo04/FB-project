@@ -14,12 +14,12 @@ public class LogIn
         }
         else
         {
+            // failed
             return false;
-            // failed();
         }
     }
 
-    private static void failed()
+    public static void failed()
     {
         System.out.println("Login failed");
         System.out.println("1)Retry");
@@ -36,10 +36,7 @@ public class LogIn
 
             if(checkValidate(email, password))
             {
-                Profile profile=new Profile();
-                profile.viewProfile(loggedIn);
-                //enter profile
-
+                Main.mainMenu(new String[]{});
             }
             else
             {
@@ -67,7 +64,25 @@ public class LogIn
         String email = Main.input.next();
         if(Register.userExists(email))
         {
-            //setpassword
+            for(User u:Main.users)
+            {
+                if(email.equals(u.getEmail()))
+                {
+                    boolean validPass = false;
+                    do {
+                        System.out.println("Please enter new password ");
+                        String pass = Main.input.next();
+                        if (Register.validPassword(pass)) {
+                            u.setPassWord(pass);
+                            Main.credentialsEntry(new String[]{});
+                            validPass = true;
+                        } else {
+                            System.out.println("Invalid password ");
+                        }
+                    }while(!validPass);
+                    break;
+                }
+            }
         }
         else
         {
