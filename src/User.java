@@ -24,9 +24,7 @@ public abstract class User
         this.birthDate = birthDate;
     }
     public User()
-    {
-
-    }
+    {}
 
     public int getID() {
         return ID;

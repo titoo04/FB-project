@@ -12,7 +12,7 @@ public class Main
     public static void main(String[] args)
     {
 
-        if(ctr == 0) loadUsersFromFile();
+        if(ctr == 0) loadDataFromFile();
         credentialsEntry(args);
 
     }
@@ -67,7 +67,7 @@ public class Main
                 case "1":
                     // create post
                     System.out.println("What's on your mind");
-                    String postContent = Main.input.next();
+                    String postContent = Main.input.nextLine();
                     //makeTags();
                     int privacyNum = Post.privacy();
                     Post post = new Post(postContent, privacyNum);
@@ -117,7 +117,6 @@ public class Main
                     break;
                 case "7":
                     Conversation conversation= new Conversation();
-                    conversation.LoadConversationsFromFile(Main.users);
                     conversation.DisplayConvos(LogIn.loggedIn);
                     conversation.writeConversationsInFile(Main.users);
                     break;
@@ -133,13 +132,17 @@ public class Main
         }while(operationChoice.equals("y"));
     }
 
-    private static void loadUsersFromFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
+    private static void loadDataFromFile()
+    {
+        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt")))
+        {
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
+            {
                 String[] userInfo = line.split(" ");
 
-                RegisteredUser user = new RegisteredUser(
+                RegisteredUser user = new RegisteredUser
+                        (
                         Integer.parseInt(userInfo[0]),
                         userInfo[1],
                         userInfo[2],
@@ -149,7 +152,66 @@ public class Main
                 );
                 users.add(user);
             }
-        } catch (IOException e) {
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+            try (BufferedReader reader = new BufferedReader(new FileReader("conversations.txt")))
+            {
+                String line;
+                while ((line= reader.readLine())!=null)
+                {
+                    Conversation conversation= new Conversation();
+                    int conversationId = Integer.parseInt(line.substring("Conversation Id: ".length()));
+                    line= reader.readLine();
+                    if (line.startsWith("Participants:"))
+                    {
+                        // Extract names dynamically using a list
+                        conversation.setId(conversationId);
+                        // Split line after "Participants:" and trim whitespace
+                        String participantsList = line.substring(line.indexOf(":") + 2).trim();
+                        // Loop until no more names are found
+                        boolean hasNextName = true;
+                        while (hasNextName)
+                        {
+                            // Find the next comma or end of string
+                            int commaIndex = participantsList.indexOf(",");
+                            int endIndex = commaIndex == -1 ? participantsList.length() : commaIndex;
+
+                            // Extract the current name and trim whitespace
+                            String userName = participantsList.substring(0,endIndex).trim();
+                            for (User participant:Main.users)
+                            {
+                                if (participant.getUserName().equals(userName))
+                                {
+                                    conversation.participants.add(participant);
+                                    participant.convos.add(conversation);
+                                    break;
+                                }
+                            }
+                            // Update participantsList for next iteration
+                            if (commaIndex != -1)
+                            {
+                                participantsList = participantsList.substring(endIndex + 1).trim();
+                            }
+                            else
+                            {
+                                hasNextName = false;
+                            }
+                        }
+                        // Stop searching after finding participants list
+                    }
+                    int chatSize = Integer.parseInt(reader.readLine());
+                    for (int k = 0; k < chatSize; k++)
+                    {
+                        conversation.chat.add(reader.readLine());
+                    }
+                }
+            }
+
+            catch (IOException e)
+         {
             e.printStackTrace();
         }
     }

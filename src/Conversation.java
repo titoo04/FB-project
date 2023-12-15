@@ -11,65 +11,16 @@ public class Conversation
     {
         this.id=++conversationsCounter;
     }
-    protected void LoadConversationsFromFile(ArrayList<User> users)
+    public int getId()
     {
-        try (BufferedReader reader = new BufferedReader(new FileReader("conversations.txt")))
-        {
-            String line;
-            while ((line= reader.readLine())!=null)
-           {
-               Conversation conversation= new Conversation();
-               int conversationId = Integer.parseInt(line.substring("Conversation Id: ".length()));
-               line= reader.readLine();
-               if (line.startsWith("Participants:"))
-                   {
-                       // Extract names dynamically using a list
-                       conversation.id=conversationId;
-                       // Split line after "Participants:" and trim whitespace
-                       String participantsList = line.substring(line.indexOf(":") + 2).trim();
-                       // Loop until no more names are found
-                       boolean hasNextName = true;
-                       while (hasNextName)
-                       {
-                           // Find the next comma or end of string
-                           int commaIndex = participantsList.indexOf(",");
-                           int endIndex = commaIndex == -1 ? participantsList.length() : commaIndex;
-
-                           // Extract the current name and trim whitespace
-                           String userName = participantsList.substring(0,endIndex).trim();
-                           for (User participant:Main.users)
-                           {
-                               if (participant.getUserName().equals(userName))
-                               {
-                                   conversation.participants.add(participant);
-                                   participant.convos.add(conversation);
-                               }
-                           }
-
-                           // Update participantsList for next iteration
-                           if (commaIndex != -1)
-                           {
-                               participantsList = participantsList.substring(endIndex + 1).trim();
-                           }
-                           else
-                           {
-                               hasNextName = false;
-                           }
-                       }
-                       // Stop searching after finding participants list
-                   }
-                   int chatSize = Integer.parseInt(reader.readLine());
-                   for (int k = 0; k < chatSize; k++)
-                   {
-                       conversation.chat.add(reader.readLine());
-                   }
-           }
-        }
-             catch(IOException e)
-                {
-                    e.printStackTrace();
-                }
+        return id;
     }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+
     protected void writeConversationsInFile(ArrayList<User> users)
     {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("conversations.txt", false)))
@@ -114,6 +65,7 @@ public class Conversation
         {
             for (Conversation conversation : user.convos)
             {
+                System.out.println(user.getUserName());
                 System.out.println("Conversation Id:"+conversation.id);
                 System.out.print("Participants: ");
                 for (User participant:conversation.participants)
@@ -126,7 +78,6 @@ public class Conversation
                 System.out.println("Press 1) to send a message");
                 System.out.println("Press 2) to add participants");
                 System.out.println("Press 3) to skip to next conversation");
-                System.out.println("Press 4) to add conversation");
                 System.out.println("Press any other key to return to main menu");
                 String choice = Main.input.next();
                 switch (choice)
@@ -147,14 +98,9 @@ public class Conversation
 
                         continue;
                     }
-                    case  "4":
-                    {
-
-                        break;
-                    }
                     default:
                     {
-
+                        break;
                     }
                 }
             }
@@ -199,16 +145,27 @@ public class Conversation
         {
             if (participant.getUserName().equals(name))
             {
-                found =true;
-                conversation.participants.add(participant);
-                participant.convos.add(conversation);
-                System.out.println("User added to conversation successfully");
+                if (!conversation.participants.contains(participant))
+                {
+                    found = true;
+                    conversation.participants.add(participant);
+                    participant.convos.add(conversation);
+                    System.out.println("User added to conversation successfully");
+                }
+                else
+                {
+                    System.out.println("User is already in this conversation");
+                }
                 System.out.println("Do you want to add other participants?");
                 String Choice = Main.input.next();
                 if (Choice.equals("y"))
-                    addParticipants(user,conversation);
+                {
+                    addParticipants(user, conversation);
+                }
                 else if (Choice.equals("n"))
+                {
                     DisplayConvos(user);
+                }
             }
         }
         if (!found)
@@ -224,13 +181,13 @@ public class Conversation
             }
         }
     }
-    public Conversation AddConversation(User user)
-    {
-        Conversation newConversation= new Conversation();
-        newConversation.chat.add("Chat is empty");
-        newConversation.participants.add(user);
-        System.out.println("Add participant: ");
-        addParticipants(user,newConversation);
-        return newConversation;
-    }
+//    public Conversation addConversation(User user)
+//    {
+//        Conversation newConversation= new Conversation();
+//        newConversation.chat.add("Chat is empty");
+//        newConversation.participants.add(user);
+//        System.out.println("Add participant: ");
+//        addParticipants(user,newConversation);
+//        return newConversation;
+//    }
 }
