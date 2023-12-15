@@ -5,6 +5,7 @@ import java.util.regex.*;
 
 public class Main
 {
+
     static Scanner input = new Scanner(System.in);
     public static int ctr = 0;
     public static ArrayList<User> users = new ArrayList<>();
@@ -55,6 +56,7 @@ public class Main
             System.out.println("2.Search for a user");
             System.out.println("3.View feed");
             System.out.println("4.View your profile");
+            System.out.println("6.View your pending requests");
             System.out.println("7.Open your conversations");
             System.out.println("8.Logout");
             operationChoice=input.next();
@@ -83,14 +85,15 @@ public class Main
                         Post.viewPosts(LogIn.loggedIn.feed);
                     }
                     System.out.println("Do you want to do another operation ? (y/n)");
-                    operationChoice=input.next();
+                    operationChoice = input.next();
                     break;
                 case "4":
                     Profile profile=new Profile();
                     profile.viewProfile(LogIn.loggedIn);
                     profile.viewPosts(LogIn.loggedIn);
+                    profile.viewFriendsList(LogIn.loggedIn);
                     System.out.println("Do you want to do another operation ? (y/n)");
-                    operationChoice=input.next();
+                    operationChoice = input.next();
                     break;
                 case "5":
                     //
@@ -98,12 +101,8 @@ public class Main
                     operationChoice=input.next();
                     break;
                 case "6":
-                    boolean addfriend;
-                    User.seeRequests(LogIn.loggedIn);
-                    if(User.seeRequests(LogIn.loggedIn))
-                        addfriend = true;
-                    else
-                        addfriend = false;
+
+                    User.addFriend(User.seeRequests(LogIn.loggedIn));
                     break;
                 case "7":
                     Conversation conversation= new Conversation();

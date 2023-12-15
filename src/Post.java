@@ -29,17 +29,17 @@ public class Post {
         switch (privacyNum)
         {
             case 1:
-                //add friends of user (all)
-                for(Friend f:User.friends)
+               //add friends of user (all)
+                for(User f:User.friends)
                 {
-                    f.feed.add(post);
-                }
+                  f.feed.add(post);
+              }
             case 2:
                 //add to friends of user (not restricted)
-                for(Friend f:User.friends)
-                {
-                    if(!f.isRestricted()) f.feed.add(post);
-                }
+//                for(User f:User.friends)
+//              {
+//                 if(!f.isRestricted()) f.feed.add(post);
+//              }
             case 3:
                 LogIn.loggedIn.postsCreated.add(post); // add post to profile
 
