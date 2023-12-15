@@ -8,10 +8,9 @@ public abstract class User
     private String passWord;
     private String gender;
     private String birthDate;
-    public static ArrayList<Post> postsCreated = new ArrayList<>();
+    public ArrayList<Post> postsCreated = new ArrayList<>();
     public ArrayList<Post> feed = new ArrayList<>();
     public static ArrayList<User> pendingRequests = new ArrayList<>();
-    public ArrayList<Post> friendsPosts = new ArrayList<>();
     public static ArrayList<Friend> friends = new ArrayList<>();
     public ArrayList<Conversation> convos = new ArrayList<>();
 

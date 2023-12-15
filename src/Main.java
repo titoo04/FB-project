@@ -32,6 +32,10 @@ public class Main
             {
                 mainMenu(args);
             }
+            else
+            {
+                LogIn.failed();
+            }
         }
         else if(choice.equals("2"))
         {
@@ -62,8 +66,13 @@ public class Main
             {
                 case "1":
                     // create post
-                    Post.createPost();
-                    operationChoice=input.next();
+                    System.out.println("What's on your mind");
+                    String postContent = Main.input.next();
+                    //makeTags();
+                    int privacyNum = Post.privacy();
+                    Post post = new Post(postContent, privacyNum);
+                    //,tags );
+                    post.createPost(post);
                     break;
                 case "2":
                     System.out.println("Enter username you want to search for");
@@ -82,20 +91,21 @@ public class Main
                     {
                         Post.viewPosts(LogIn.loggedIn.feed);
                     }
-                    System.out.println("Do you want to do another operation ? (y/n)");
-                    operationChoice=input.next();
                     break;
                 case "4":
                     Profile profile=new Profile();
                     profile.viewProfile(LogIn.loggedIn);
-                    profile.viewPosts(LogIn.loggedIn);
-                    System.out.println("Do you want to do another operation ? (y/n)");
-                    operationChoice=input.next();
+                    if(LogIn.loggedIn.postsCreated.isEmpty())
+                    {
+                        Post.noProfilePosts();
+                    }
+                    else
+                    {
+                        Post.viewProfilePosts(LogIn.loggedIn.postsCreated);
+                    }
                     break;
                 case "5":
                     //
-                    System.out.println("Do you want to do another operation ? (y/n)");
-                    operationChoice=input.next();
                     break;
                 case "6":
                     boolean addfriend;
@@ -118,7 +128,7 @@ public class Main
                     System.out.println("Invalid Selection Please check your selection");
                     mainMenu(args);
             }
-            System.out.println("do you want to do another operation?");
+            System.out.println("do you want to do another operation? (y/n)");
             operationChoice=input.next();
         }while(operationChoice.equals("y"));
     }
