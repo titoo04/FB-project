@@ -8,8 +8,8 @@ public class Register
     public Register() {}
 
     public static void registerUser() {
-        System.out.println("Enter username: ");
-        String userName = Main.input.next();
+        System.out.println("Enter full name: ");
+        String name = Main.input.nextLine();
 
         System.out.println("Enter email: ");
         String email = Main.input.next();
@@ -23,7 +23,7 @@ public class Register
         System.out.println("Enter birth date: ");
         String birthDate = Main.input.next();
 
-        RegisteredUser newUser = RegisteredUser.registerUser(userName, email, passWord, gender, birthDate);
+        RegisteredUser newUser = RegisteredUser.registerUser(name, email, passWord, gender, birthDate);
 
         while(userExists(newUser.getEmail()) || !validEmail(newUser)){
             checkEmail(newUser);
@@ -47,14 +47,14 @@ public class Register
         addUser(newUser);
     }
 
-    private static void addUser(RegisteredUser u){
+    private static void addUser(RegisteredUser u) {
         Main.users.add(u);
         System.out.println("User made successfully");
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt", true))) {
-            writer.write(String.valueOf(u.getID()) + ' ' +
-                    u.getUserName() + ' ' +
-                    u.getEmail() + ' ' +
+            writer.write(String.valueOf(u.getID()) + ' ' + u.getName());
+            writer.newLine();
+            writer.write(u.getEmail() + ' ' +
                     u.getPassWord() + ' ' +
                     u.getGender() + ' ' +
                     u.getBirthDate());

@@ -9,9 +9,9 @@ public class Main
     public static int ctr = 0;
     public static ArrayList<User> users = new ArrayList<>();
     public static ArrayList<User> usersToshow= new ArrayList<>();
+    public static ArrayList<Post> posts = new ArrayList<>();
     public static void main(String[] args)
     {
-
         if(ctr == 0) loadUsersFromFile();
         credentialsEntry(args);
 
@@ -21,6 +21,8 @@ public class Main
         System.out.println("1)Login");
         System.out.println("2)Register");
         String choice = input.next();
+
+        input.nextLine();
 
         if(choice.equals("1"))
         {
@@ -67,11 +69,12 @@ public class Main
                 case "1":
                     // create post
                     System.out.println("What's on your mind");
-                    String postContent = Main.input.next();
-                    //makeTags();
+                    input.nextLine();
+                    String postContent = Main.input.nextLine();
+                    ArrayList<User> TU = new ArrayList<>();
+                    TU = Post.makeTags(TU);
                     int privacyNum = Post.privacy();
-                    Post post = new Post(postContent, privacyNum);
-                    //,tags );
+                    Post post = new Post(postContent, privacyNum, TU);
                     post.createPost(post);
                     break;
                 case "2":
@@ -138,14 +141,17 @@ public class Main
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] userInfo = line.split(" ");
+                int id = Integer.parseInt(userInfo[0]);
+                String name = userInfo[1];
+                String[] userDetails = reader.readLine().split(" ");
 
                 RegisteredUser user = new RegisteredUser(
-                        Integer.parseInt(userInfo[0]),
-                        userInfo[1],
-                        userInfo[2],
-                        userInfo[3],
-                        userInfo[4],
-                        userInfo[5]
+                        id,
+                        name,
+                        userDetails[0],
+                        userDetails[1],
+                        userDetails[2],
+                        userDetails[3]
                 );
                 users.add(user);
             }

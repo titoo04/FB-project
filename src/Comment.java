@@ -1,20 +1,14 @@
 import java.util.*;
 
 public class Comment {
-    private int ID;
+    private int UserID;
     private String content;
     private  ArrayList<Pair<String, Integer>> replies= new ArrayList<>();
     private int reacts = 0;
-    public String getContent()
+
+    public Comment(int userId, String content)
     {
-        return content;
-    }
-    public void setContent(String commentContent)
-    {
-        content = commentContent;
-    }
-    public Comment(String content)
-    {
+        this.UserID = userId;
         this.content=content;
     }
 
@@ -31,9 +25,10 @@ public class Comment {
                 switch(commentChoice.toLowerCase())
                 {
                     case "y":
-                        String writeComment=Main.input.next();
-                        Comment comment=new Comment(writeComment);
-                        p.comments.add(comment);
+                        Main.input.nextLine();
+                        String writeComment=Main.input.nextLine();
+                        Comment comment=new Comment(LogIn.loggedIn.getID(), writeComment);
+                        p.comments.add(0, comment);
                         validInput = true;
                         viewComments(p);
                         break;
@@ -54,6 +49,7 @@ public class Comment {
             {
                 if(backToPost) break;
                 System.out.println(comment.getContent());
+                System.out.println("Reacts " + comment.getReacts());
                 System.out.println("1)React ");
                 System.out.println("2)Reply ");
                 System.out.println("3)Skip comment ");
@@ -73,7 +69,7 @@ public class Comment {
                             System.out.println("1)Do another operation?");
                             System.out.println("2)Next comment ");
                             operationOption1 = Main.input.next();
-                            if(operationOption1.equals("1")) cnt++;//ezay hy react martein keda el mafrood ne3mel boolean eno yehseel el react
+                            if(operationOption1.equals("1")) cnt++;
                             else if(operationOption1.equals("2"))
                             {
                                 validInput = true;
@@ -85,10 +81,14 @@ public class Comment {
                             break;
                         case "2": //Reply
                             System.out.println("Write a reply...");
-                            String writeReply=Main.input.next();
+                            Main.input.nextLine();
+                            String writeReply = Main.input.nextLine();
                             Pair<String,Integer> reply = new Pair<>(writeReply,0);
                             comment.replies.add(reply);
                             viewReplies(comment); //view Replies
+
+                            System.out.println(comment.getContent());
+                            System.out.println("Reacts " + comment.getReacts());
                             System.out.println("1)Do another operation?");
                             System.out.println("2)Next comment ");
                             operationOption1 = Main.input.next();
@@ -103,6 +103,7 @@ public class Comment {
                             }
                             break;
                         case "3": //Skip Comment
+                            validInput = true;
                             if(++idx == p.comments.size())
                             {
                                 System.out.println("You have reached the last comment");
@@ -131,9 +132,10 @@ public class Comment {
                 switch(replyChoice.toLowerCase())
                 {
                     case "y":
-                        String writeReply=Main.input.next();
+                        Main.input.nextLine();
+                        String writeReply=Main.input.nextLine();
                         Pair<String,Integer> rep=new Pair<>(writeReply,0);
-                        c.replies.add(rep);
+                        c.replies.add(0, rep);
                         validInput = true;
                         viewReplies(c);
                         break;
@@ -154,16 +156,16 @@ public class Comment {
             {
                 if(backToComment) break;
                 System.out.println(r.getKey());
+                System.out.println("Reacts "+r.getValue());
                 System.out.println("1)React ");
-                System.out.println("2)Reply ");
-                System.out.println("3)Skip reply ");
-                System.out.println("4)Return to comment ");
+                System.out.println("2)Skip reply ");
+                System.out.println("3)Return to comment ");
 
                 int cnt = 0;
                 boolean validInput = false;
                 do
                 {
-                    if(cnt>0) System.out.println("1)React 2)Reply 3)Skip reply 4)Return to comment ");
+                    if(cnt>0) System.out.println("1)React 2)Skip reply 3)Return to comment ");
                     String friendsReplyOption = Main.input.next();
                     String operationOption1;
                     switch (friendsReplyOption)
@@ -183,32 +185,14 @@ public class Comment {
                                 }
                             }
                             break;
-                        case "2": //Reply
-                            System.out.println("Write a reply...");
-                            String writeReply=Main.input.next();
-                            Pair<String,Integer> reply = new Pair<>(writeReply,0);
-                            c.replies.add(reply);
-
-                            System.out.println("1)Do another operation?");
-                            System.out.println("2)Next reply ");
-                            operationOption1 = Main.input.next();
-                            if(operationOption1.equals("1")) cnt++;
-                            else if(operationOption1.equals("2"))
-                            {
-                                validInput = true;
-                                if(++idx == c.replies.size())
-                                {
-                                    System.out.println("You have reached the last reply ");
-                                }
-                            }
-                            break;
-                        case "3": //Skip Comment
+                        case "2": //Skip Comment
+                            validInput = true;
                             if(++idx == c.replies.size())
                             {
                                 System.out.println("You have reached the last reply ");
                             }
                             continue;
-                        case "4": //Return
+                        case "3": //Return
                             validInput= true;
                             backToComment = true;
                     }
@@ -216,5 +200,30 @@ public class Comment {
                 while (!validInput);
             }
         }
+    }
+
+    public String getContent()
+    {
+        return content;
+    }
+    public void setContent(String commentContent)
+    {
+        content = commentContent;
+    }
+
+    public int getUserID() {
+        return UserID;
+    }
+
+    public void setUserID(int userID) {
+        UserID = userID;
+    }
+
+    public int getReacts() {
+        return reacts;
+    }
+
+    public void setReacts(int reacts) {
+        this.reacts = reacts;
     }
 }

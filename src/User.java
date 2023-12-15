@@ -3,24 +3,23 @@ import  java.util.*;
 public abstract class User
 {
     private int ID;
-    private String userName;
+    private String name;
     private String email;
     private String passWord;
     private String gender;
     private String birthDate;
-    public static ArrayList<Post> postsCreated = new ArrayList<>();
-    public static ArrayList<User> friends = new ArrayList<>();
+    public ArrayList<Post> postsCreated = new ArrayList<>();
+    public ArrayList<Post> feed = new ArrayList<>();
+    public static ArrayList<User> pendingRequests = new ArrayList<>();
+    public static ArrayList<Friend> friends = new ArrayList<>();
     public static ArrayList<User> restrictedFriends = new ArrayList<>();
     public static ArrayList<User> regularFriends = new ArrayList<>();
-    public static ArrayList<User> pendingRequests = new ArrayList<>();
-    public ArrayList<Post> feed = new ArrayList<>();
-    public ArrayList<Post> friendsPosts = new ArrayList<>();
     public ArrayList<Conversation> convos = new ArrayList<>();
 
-    public User(int ID, String userName, String email, String passWord, String gender, String birthDate)
+    public User(int ID, String name, String email, String passWord, String gender, String birthDate)
     {
         this.ID = ID;
-        this.userName = userName;
+        this.name = name;
         this.email = email;
         this.passWord = passWord;
         this.gender = gender;
@@ -55,12 +54,12 @@ public abstract class User
         this.passWord = passWord;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getGender() {
@@ -84,7 +83,7 @@ public abstract class User
         for(User u:Main.users)
         {
             boolean found = false;
-            if (searchUsername.equals(u.getUserName()))
+            if (searchUsername.equals(u.getName()))
             {
                 found = true;
             }
@@ -96,7 +95,7 @@ public abstract class User
         for(int i = 0; i < Main.usersToshow.size() ; i++)
         {
             {
-                System.out.println((i + 1) + " " + Main.usersToshow.get(i).getUserName() + " " + Main.usersToshow.get(i).getEmail());
+                System.out.println((i + 1) + " " + Main.usersToshow.get(i).getName() + " " + Main.usersToshow.get(i).getEmail());
             }
 
         }
@@ -114,7 +113,7 @@ public abstract class User
         }
         System.out.println("Request sent !");
     }
-    public static User seeRequests(User u) {
+    public static boolean seeRequests(User u) {
         if (u.pendingRequests.isEmpty()) {
             System.out.println("You don't have any pending requests.");
             return null;
@@ -122,7 +121,7 @@ public abstract class User
 
         for (int i = 0; i < u.pendingRequests.size(); i++) {
             User requester = u.pendingRequests.get(i);
-            System.out.println((i + 1) + " " + requester.getUserName() + " " + requester.getEmail());
+            System.out.println((i + 1) + " " + requester.getName() + " " + requester.getEmail());
         }
 
         System.out.println("Choose the user you want to select:");
@@ -144,13 +143,13 @@ public abstract class User
         if (actionChoice == 1)
         {
             // Confirmation logic
-            System.out.println("Confirmed request from " + selectedUser.getUserName());
+            System.out.println("Confirmed request from " + selectedUser.getName());
             u.pendingRequests.remove(index);  // Remove from pending requests after confirmation
             return selectedUser;
         } else if (actionChoice == 2)
         {
             // Decline logic
-            System.out.println("Declined request from " + selectedUser.getUserName());
+            System.out.println("Declined request from " + selectedUser.getName());
             u.pendingRequests.remove(index);  // Remove from pending requests after decline
             return null;
         } else {
@@ -162,8 +161,8 @@ public abstract class User
     {
         if(!LogIn.loggedIn.friends.contains(friend))
         {
-            LogIn.loggedIn.friends.add(friend);
-            friend.friends.add(LogIn.loggedIn);
+            LogIn.loggedIn.friends.add((Friend)friend);
+            friend.friends.add((Friend)LogIn.loggedIn);
             System.out.println("1. Add as a restricted friend (Can see the public posts only)");
             System.out.println("2. Add as a regular friend(Can see all posts)");
             int friendChoice = Main.input.nextInt();
@@ -184,6 +183,6 @@ public abstract class User
             }
         }
         else
-            System.out.println(LogIn.loggedIn.getUserName()+ " is already friends with" + friend.getUserName());
+            System.out.println(LogIn.loggedIn.getName()+ " is already friends with" + friend.getName());
     }
 }

@@ -39,7 +39,7 @@ public class Conversation
                            String userName = participantsList.substring(0,endIndex).trim();
                            for (User participant:Main.users)
                            {
-                               if (participant.getUserName().equals(userName))
+                               if (participant.getName().equals(userName))
                                {
                                    conversation.participants.add(participant);
                                    participant.convos.add(conversation);
@@ -87,7 +87,7 @@ public class Conversation
                         writer.write("Participants: ");
                         for (User participant:conversation.participants)
                         {
-                            writer.write(participant.getUserName()+',');
+                            writer.write(participant.getName()+',');
                         }
                         writer.newLine();
                         writer.write(String.valueOf(conversation.chat.size()));
@@ -117,7 +117,7 @@ public class Conversation
                 System.out.println("Conversation Id:"+conversation.id);
                 System.out.print("Participants: ");
                 for (User participant:conversation.participants)
-                    System.out.print(participant.getUserName()+",");
+                    System.out.print(participant.getName()+",");
                 System.out.println();
                 for (String msg:conversation.chat)
                 {
@@ -184,7 +184,7 @@ public class Conversation
             {
                 conversation.chat.clear();
             }
-            conversation.chat.add(user.getUserName() + ": " + message);
+            conversation.chat.add(user.getName() + ": " + message);
         }
         else
         {
@@ -197,7 +197,7 @@ public class Conversation
         String name= Main.input.next();
         for (User participant:Main.users)
         {
-            if (participant.getUserName().equals(name))
+            if (participant.getName().equals(name))
             {
                 found =true;
                 conversation.participants.add(participant);
