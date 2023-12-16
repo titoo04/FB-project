@@ -2,11 +2,12 @@ import java.util.*;
 
 public class RegisteredUser extends User
 {
-    Scanner input = new Scanner(System.in);
     public RegisteredUser(int ID, String userName, String email, String passWord, String gender, String birthDate)
     {
         super(ID, userName, email, passWord, gender, birthDate);
     }
+    public RegisteredUser()
+    {}
 
     public static RegisteredUser registerUser(String name, String email, String passWord, String gender, String birthDate)
     {

@@ -32,6 +32,5 @@ public class Profile
             User friend = LogIn.loggedIn.friends.get(i);
            System.out.println(friend.getName());
         }
-
     }
 }

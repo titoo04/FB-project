@@ -1,55 +1,94 @@
 import java.util.*;
 
 public class Post {
-    private int ID;
-
-    private String postContent;
+    private static int ID;
+    public static String postContent;
     private int userId;
-    private int privacyOptions;
+    public int privacyOptions;
     private int reacts = 0;
-    public  ArrayList <Comment> comments= new ArrayList<>();
-    private ArrayList <User> taggedUsers = new ArrayList<>();
+    public ArrayList<Comment> comments = new ArrayList<>();
+    private ArrayList<User> taggedUsers = new ArrayList<>();
 
-    public Post(String content,int privacyOptions)
+    public Post(String content, int privacyOptions, ArrayList<User> TA)//,tags)
     {
-        this.ID=Main.posts.size()+1;
-        this.postContent=content;
-        this.privacyOptions=privacyOptions;
-        this.reacts=0;
+        this.postContent = content;
+        this.ID = User.feed.size() + 1;
+        this.privacyOptions = privacyOptions;
+        this.reacts = 0;
+        taggedUsers = TA;
     }
 
-    public Post(String content,int privacyOptions, ArrayList<User> TU)
-    {
-        this.ID=Main.posts.size()+1;
-        this.postContent=content;
-        this.privacyOptions=privacyOptions;
-        this.taggedUsers = TU;
-        this.reacts=0;
+    public static void setID(int ID) {
+        Post.ID = ID;
     }
 
-    public void createPost(Post p)
-    {
 
-        switch (p.getPrivacyOptions())
-        {
+    public Post(String content, int privacyOptions)
+    {
+        ID=User.feed.size()+1;
+        postContent=content;
+        this.privacyOptions=privacyOptions;
+    }
+    public Post()
+    {}
+
+    public void setPostContent(String postContent) {
+        this.postContent = postContent;
+    }
+
+    public String getPostContent() {
+        return postContent;
+    }
+
+    public int getPrivacyOptions() {
+        return privacyOptions;
+    }
+
+    public void setPrivacyOptions(int privacyOptions) {
+        this.privacyOptions = privacyOptions;
+    }
+
+    public int getReacts() {
+        return reacts;
+    }
+
+    public void setReacts(int reacts) {
+        this.reacts = reacts;
+    }
+
+    public void setId(int userId) {
+        this.userId = userId;
+    }
+
+    public static int getID() {
+        return ID;
+    }
+
+    public ArrayList<User> getTaggedUsers() {
+        return taggedUsers;
+    }
+
+    public void createPost(Post p) {
+
+        switch (p.getPrivacyOptions()) {
             case 1:
                 //add friends of user (all)
-                for(Friend f:User.friends)
+                for (User f : LogIn.loggedIn.friends)
                 {
-                    f.feed.add(0, p);
+                    f.feed.add(p);
                 }
-                LogIn.loggedIn.postsCreated.add(0, p);
+                LogIn.loggedIn.postsCreated.add(p);
                 break;
             case 2:
                 //add to friends of user (not restricted)
-                for(Friend f:User.friends)
+                for (User f : LogIn.loggedIn.friends)
                 {
-                    if(!f.isRestricted()) f.feed.add(0, p);
+                    LogIn.loggedIn.postsCreated.add(p);
                 }
-                LogIn.loggedIn.postsCreated.add(0, p);
+                LogIn.loggedIn.postsCreated.add(p);
                 break;
             case 3:
-                LogIn.loggedIn.postsCreated.add(0, p); // add post to profile
+                LogIn.loggedIn.postsCreated.add(p); // add post to profile
 
         }
     }
@@ -62,7 +101,7 @@ public class Post {
             System.out.println("Enter the user:");
             Main.input.nextLine();
             String friend = Main.input.nextLine();
-            for (Friend f : LogIn.loggedIn.friends) {
+            for (User f : LogIn.loggedIn.friends) {
                 if (friend.equals(f.getName())) {
                     found = true;
                     System.out.println(f.getName() + ' ' + f.getEmail());
@@ -93,39 +132,29 @@ public class Post {
     }
 
 
-    public static int privacy()
-    {
+    public static int privacy() {
         System.out.println("Enter 1 for public ");
         System.out.println("Enter 2 for restricted friends ");
         System.out.println("Enter 3 for private ");
-        String privacyOptions=Main.input.next();
-        if (privacyOptions.equals("1"))
-        {
+        String privacyOptions = Main.input.next();
+        if (privacyOptions.equals("1")) {
             //public post
             return 1;
-        }
-        else if (privacyOptions.equals("2"))
-        {
+        } else if (privacyOptions.equals("2")) {
             //friends only
             return 2;
-        }
-        else if (privacyOptions.equals("3"))
-        {
+        } else if (privacyOptions.equals("3")) {
             //private
             return 3;
-        }
-        else
-        {
+        } else {
             System.out.println("Invalid input, Choose 1, 2, or 3");
             return privacy();
         }
     }
 
-    public static void viewPosts(ArrayList<Post> posts)
-    {
+    public static void viewPosts(ArrayList<Post> posts) {
         int idx = 0;
-        for (Post p:posts)
-        {
+        for (Post p : posts) {
             System.out.println(p.getPostContent());
             System.out.println("Reacts " + p.getReacts());
             System.out.println("1)Like");
@@ -135,26 +164,22 @@ public class Post {
 
             int ctr = 0;
             boolean validInput = false;
-            do
-            {
-                if(ctr>0) System.out.println("1)Like 2)View comments 3)Add a comment 4)Skip post");
+            do {
+                if (ctr > 0) System.out.println("1)Like 2)View comments 3)Add a comment 4)Skip post");
                 String friendsPostOption = Main.input.next();
                 String operationOption;
-                switch (friendsPostOption)
-                {
+                switch (friendsPostOption) {
                     case "1":
                         p.reacts++;
                         System.out.println("1)Do another operation?");
                         System.out.println("2)Next post");
 
                         operationOption = Main.input.next();
-                        if(operationOption.equals("1")) ctr++;
-                        else if(operationOption.equals("2"))
-                        {
+                        if (operationOption.equals("1")) ctr++;
+                        else if (operationOption.equals("2")) {
                             idx++;
-                            if(idx<posts.size())validInput = true;
-                            else
-                            {
+                            if (idx < posts.size()) validInput = true;
+                            else {
                                 System.out.println("You have reached end of posts");
                                 validInput = true;
                             }
@@ -169,13 +194,11 @@ public class Post {
                         System.out.println("2)Exit");
 
                         operationOption = Main.input.next();
-                        if(operationOption.equals("1")) ctr++;
-                        else if(operationOption.equals("2"))
-                        {
+                        if (operationOption.equals("1")) ctr++;
+                        else if (operationOption.equals("2")) {
                             idx++;
-                            if(idx<posts.size())validInput = true;
-                            else
-                            {
+                            if (idx < posts.size()) validInput = true;
+                            else {
                                 System.out.println("You have reached end of posts");
                                 validInput = true;
                             }
@@ -192,13 +215,11 @@ public class Post {
                         System.out.println("2)Next post");
 
                         operationOption = Main.input.next();
-                        if(operationOption.equals("1")) ctr++;
-                        else if(operationOption.equals("2"))
-                        {
+                        if (operationOption.equals("1")) ctr++;
+                        else if (operationOption.equals("2")) {
                             idx++;
-                            if(idx<posts.size())validInput = true;
-                            else
-                            {
+                            if (idx < posts.size()) validInput = true;
+                            else {
                                 System.out.println("You have reached end of posts");
                                 validInput = true;
                             }
@@ -206,9 +227,8 @@ public class Post {
                         break;
                     case "4":
                         idx++;
-                        if(idx<posts.size())validInput = true;
-                        else
-                        {
+                        if (idx < posts.size()) validInput = true;
+                        else {
                             System.out.println("You have reached end of posts");
                             validInput = true;
                         }
@@ -217,15 +237,13 @@ public class Post {
                         System.out.println("Invalid input, please enter 1 or 2");
                 }
             }
-            while(!validInput);
+            while (!validInput);
         }
     }
 
-    public static void viewProfilePosts(ArrayList<Post> posts)
-    {
+    public static void viewProfilePosts(ArrayList<Post> posts) {
         int idx = 0;
-        for (Post p:posts)
-        {
+        for (Post p : posts) {
             System.out.println(p.getPostContent());
             System.out.println("Reacts " + p.getReacts());
             System.out.println("1)Like");
@@ -236,26 +254,22 @@ public class Post {
 
             int ctr = 0;
             boolean validInput = false;
-            do
-            {
-                if(ctr>0) System.out.println("1)Like 2)View comments 3)Add a comment 4)Edit post 5)Skip post");
+            do {
+                if (ctr > 0) System.out.println("1)Like 2)View comments 3)Add a comment 4)Edit post 5)Skip post");
                 String friendsPostOption = Main.input.next();
                 String operationOption;
-                switch (friendsPostOption)
-                {
+                switch (friendsPostOption) {
                     case "1":
                         p.reacts++;
                         System.out.println("1)Do another operation?");
                         System.out.println("2)Next post");
 
                         operationOption = Main.input.next();
-                        if(operationOption.equals("1")) ctr++;
-                        else if(operationOption.equals("2"))
-                        {
+                        if (operationOption.equals("1")) ctr++;
+                        else if (operationOption.equals("2")) {
                             idx++;
-                            if(idx<posts.size())validInput = true;
-                            else
-                            {
+                            if (idx < posts.size()) validInput = true;
+                            else {
                                 System.out.println("You have reached end of posts");
                                 validInput = true;
                             }
@@ -269,13 +283,11 @@ public class Post {
                         System.out.println("2)Exit");
 
                         operationOption = Main.input.next();
-                        if(operationOption.equals("1")) ctr++;
-                        else if(operationOption.equals("2"))
-                        {
+                        if (operationOption.equals("1")) ctr++;
+                        else if (operationOption.equals("2")) {
                             idx++;
-                            if(idx<posts.size())validInput = true;
-                            else
-                            {
+                            if (idx < posts.size()) validInput = true;
+                            else {
                                 System.out.println("You have reached end of posts");
                                 validInput = true;
                             }
@@ -292,13 +304,11 @@ public class Post {
                         System.out.println("2)Next post");
 
                         operationOption = Main.input.next();
-                        if(operationOption.equals("1")) ctr++;
-                        else if(operationOption.equals("2"))
-                        {
+                        if (operationOption.equals("1")) ctr++;
+                        else if (operationOption.equals("2")) {
                             idx++;
-                            if(idx<posts.size())validInput = true;
-                            else
-                            {
+                            if (idx < posts.size()) validInput = true;
+                            else {
                                 System.out.println("You have reached end of posts");
                                 validInput = true;
                             }
@@ -312,13 +322,11 @@ public class Post {
                         System.out.println("2)Exit");
 
                         operationOption = Main.input.next();
-                        if(operationOption.equals("1")) ctr++;
-                        else if(operationOption.equals("2"))
-                        {
+                        if (operationOption.equals("1")) ctr++;
+                        else if (operationOption.equals("2")) {
                             idx++;
-                            if(idx<posts.size())validInput = true;
-                            else
-                            {
+                            if (idx < posts.size()) validInput = true;
+                            else {
                                 System.out.println("You have reached end of posts");
                                 validInput = true;
                             }
@@ -326,9 +334,8 @@ public class Post {
                         break;
                     case "5":
                         idx++;
-                        if(idx<posts.size())validInput = true;
-                        else
-                        {
+                        if (idx < posts.size()) validInput = true;
+                        else {
                             System.out.println("You have reached end of posts");
                             validInput = true;
                         }
@@ -337,19 +344,17 @@ public class Post {
                         System.out.println("Invalid input, please enter 1 or 2");
                 }
             }
-            while(!validInput);
+            while (!validInput);
         }
     }
 
-    public static void noFriendsPosts()
-    {
+    public static void noFriendsPosts() {
         System.out.println("No posts to show");
         System.out.println("1)Add friends?");
         System.out.println("2)Go back");
 
         boolean validInput = false;
-        while(!validInput)
-        {
+        while (!validInput) {
             String emptyFriendsPosts = Main.input.next();
             switch (emptyFriendsPosts) {
                 case "1":
@@ -365,16 +370,14 @@ public class Post {
         }
     }
 
-    public static void noProfilePosts()
-    {
+    public static void noProfilePosts() {
         System.out.println("No posts to show");
         System.out.println("1)Create a post");
         System.out.println("2)Go back");
 
         String operationOption;
         boolean validInput = false;
-        while(!validInput)
-        {
+        while (!validInput) {
             String emptyFriendsPosts = Main.input.next();
             switch (emptyFriendsPosts) {
                 case "1":
@@ -391,7 +394,7 @@ public class Post {
                     System.out.println("2)Exit");
 
                     operationOption = Main.input.next();
-                    if(operationOption.equals("2"))validInput = true;
+                    if (operationOption.equals("2")) validInput = true;
                     break;
                 case "2":
                     validInput = true;
@@ -400,29 +403,5 @@ public class Post {
                     System.out.println("Invalid input, please enter 1 or 2");
             }
         }
-    }
-
-    public void setPostContent(String postContent) {
-        this.postContent = postContent;
-    }
-
-    public String getPostContent() {
-        return postContent;
-    }
-
-    public int getPrivacyOptions() {
-        return privacyOptions;
-    }
-
-    public void setPrivacyOptions(int privacyOptions) {
-        this.privacyOptions = privacyOptions;
-    }
-
-    public int getReacts() {
-        return reacts;
-    }
-
-    public void setReacts(int reacts) {
-        this.reacts = reacts;
     }
 }

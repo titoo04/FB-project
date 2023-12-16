@@ -7,7 +7,7 @@ public class LogIn
     public LogIn()
     {}
 
-    public static boolean login(String email, String password){
+    public  boolean login(String email, String password){
         if(checkValidate(email, password))
         {
             return true;

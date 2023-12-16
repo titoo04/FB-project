@@ -12,6 +12,14 @@ public class Comment {
         this.content=content;
     }
 
+    public ArrayList<Pair<String, Integer>> getReplies() {
+        return replies;
+    }
+
+    public Comment(String content) {
+        this.content = content;
+    }
+
     public static void viewComments(Post p)
     {
         if (p.comments.isEmpty())
