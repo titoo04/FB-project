@@ -8,12 +8,12 @@ public class RegisteredUser extends User
         super(ID, userName, email, passWord, gender, birthDate);
     }
 
-    public static RegisteredUser registerUser(String userName, String email, String passWord, String gender, String birthDate)
+    public static RegisteredUser registerUser(String name, String email, String passWord, String gender, String birthDate)
     {
         RegisteredUser newUser = new RegisteredUser
         (
                 Main.users.size()+1,
-                userName,
+                name,
                 email,
                 passWord,
                 gender,

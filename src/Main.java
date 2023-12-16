@@ -9,10 +9,10 @@ public class Main
     public static int ctr = 0;
     public static ArrayList<User> users = new ArrayList<>();
     public static ArrayList<User> usersToshow= new ArrayList<>();
+    public static ArrayList<Post> posts = new ArrayList<>();
     public static void main(String[] args)
     {
-
-        if(ctr == 0) loadDataFromFile();
+        if(ctr == 0) loadUsersFromFile();
         credentialsEntry(args);
 
     }
@@ -21,6 +21,8 @@ public class Main
         System.out.println("1)Login");
         System.out.println("2)Register");
         String choice = input.next();
+
+        input.nextLine();
 
         if(choice.equals("1"))
         {
@@ -67,11 +69,12 @@ public class Main
                 case "1":
                     // create post
                     System.out.println("What's on your mind");
+                    input.nextLine();
                     String postContent = Main.input.nextLine();
-                    //makeTags();
+                    ArrayList<User> TU = new ArrayList<>();
+                    TU = Post.makeTags(TU);
                     int privacyNum = Post.privacy();
-                    Post post = new Post(postContent, privacyNum);
-                    //,tags );
+                    Post post = new Post(postContent, privacyNum, TU);
                     post.createPost(post);
                     break;
                 case "2":
@@ -117,6 +120,7 @@ public class Main
                     break;
                 case "7":
                     Conversation conversation= new Conversation();
+                    conversation.LoadConversationsFromFile(Main.users);
                     conversation.DisplayConvos(LogIn.loggedIn);
                     conversation.writeConversationsInFile(Main.users);
                     break;
@@ -132,86 +136,26 @@ public class Main
         }while(operationChoice.equals("y"));
     }
 
-    private static void loadDataFromFile()
-    {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt")))
-        {
+    private static void loadUsersFromFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
             String line;
-            while ((line = reader.readLine()) != null)
-            {
+            while ((line = reader.readLine()) != null) {
                 String[] userInfo = line.split(" ");
+                int id = Integer.parseInt(userInfo[0]);
+                String name = userInfo[1];
+                String[] userDetails = reader.readLine().split(" ");
 
-                RegisteredUser user = new RegisteredUser
-                        (
-                        Integer.parseInt(userInfo[0]),
-                        userInfo[1],
-                        userInfo[2],
-                        userInfo[3],
-                        userInfo[4],
-                        userInfo[5]
+                RegisteredUser user = new RegisteredUser(
+                        id,
+                        name,
+                        userDetails[0],
+                        userDetails[1],
+                        userDetails[2],
+                        userDetails[3]
                 );
                 users.add(user);
             }
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
-            try (BufferedReader reader = new BufferedReader(new FileReader("conversations.txt")))
-            {
-                String line;
-                while ((line= reader.readLine())!=null)
-                {
-                    Conversation conversation= new Conversation();
-                    int conversationId = Integer.parseInt(line.substring("Conversation Id: ".length()));
-                    line= reader.readLine();
-                    if (line.startsWith("Participants:"))
-                    {
-                        // Extract names dynamically using a list
-                        conversation.setId(conversationId);
-                        // Split line after "Participants:" and trim whitespace
-                        String participantsList = line.substring(line.indexOf(":") + 2).trim();
-                        // Loop until no more names are found
-                        boolean hasNextName = true;
-                        while (hasNextName)
-                        {
-                            // Find the next comma or end of string
-                            int commaIndex = participantsList.indexOf(",");
-                            int endIndex = commaIndex == -1 ? participantsList.length() : commaIndex;
-
-                            // Extract the current name and trim whitespace
-                            String userName = participantsList.substring(0,endIndex).trim();
-                            for (User participant:Main.users)
-                            {
-                                if (participant.getUserName().equals(userName))
-                                {
-                                    conversation.participants.add(participant);
-                                    participant.convos.add(conversation);
-                                    break;
-                                }
-                            }
-                            // Update participantsList for next iteration
-                            if (commaIndex != -1)
-                            {
-                                participantsList = participantsList.substring(endIndex + 1).trim();
-                            }
-                            else
-                            {
-                                hasNextName = false;
-                            }
-                        }
-                        // Stop searching after finding participants list
-                    }
-                    int chatSize = Integer.parseInt(reader.readLine());
-                    for (int k = 0; k < chatSize; k++)
-                    {
-                        conversation.chat.add(reader.readLine());
-                    }
-                }
-            }
-
-            catch (IOException e)
-         {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

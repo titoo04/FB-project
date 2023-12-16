@@ -6,7 +6,7 @@ public class Profile
     }
     public void viewProfile(User u)
     {
-        System.out.println(u.getUserName());
+        System.out.println(u.getName());
         System.out.println(u.getBirthDate());
         System.out.println(u.getGender());
         System.out.println(u.getEmail());
@@ -30,7 +30,7 @@ public class Profile
         for(int i =0;i<LogIn.loggedIn.friends.size();i++)
         {
             User friend = LogIn.loggedIn.friends.get(i);
-           System.out.println(friend.getUserName());
+           System.out.println(friend.getName());
         }
 
     }
