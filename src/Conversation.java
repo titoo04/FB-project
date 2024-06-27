@@ -3,14 +3,10 @@ import java.util.*;
 
 public class Conversation
 {
-    public ArrayList<User>participants=new ArrayList<>();
-    protected ArrayList<String>chat= new ArrayList<>();
     private int id;
-    private static int conversationsCounter=0;
-    public Conversation()
-    {
-        this.id=++conversationsCounter;
-    }
+    private ArrayList<User>participants=new ArrayList<>();
+    private ArrayList<String>chat= new ArrayList<>();
+
     protected void LoadConversationsFromFile(ArrayList<User> users)
     {
         try (BufferedReader reader = new BufferedReader(new FileReader("conversations.txt")))
@@ -42,7 +38,7 @@ public class Conversation
                                if (participant.getName().equals(userName))
                                {
                                    conversation.participants.add(participant);
-                                   participant.convos.add(conversation);
+                                   participant.getConvos().add(conversation);
                                }
                            }
 
@@ -70,6 +66,7 @@ public class Conversation
                     e.printStackTrace();
                 }
     }
+
     protected void writeConversationsInFile(ArrayList<User> users)
     {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("conversations.txt", false)))
@@ -77,7 +74,7 @@ public class Conversation
             ArrayList<Integer>isAlreadyWritten=new ArrayList<>();
             for (User user:users)
             {
-                for (Conversation conversation: user.convos)
+                for (Conversation conversation: user.getConvos())
                 {
                     if (!isAlreadyWritten.contains(conversation.id))
                     {
@@ -110,9 +107,9 @@ public class Conversation
 
     protected void DisplayConvos(User user )
     {
-        if(!user.convos.isEmpty())
+        if(!user.getConvos().isEmpty())
         {
-            for (Conversation conversation : user.convos)
+            for (Conversation conversation : user.getConvos())
             {
                 System.out.println("Conversation Id:"+conversation.id);
                 System.out.print("Participants: ");
@@ -168,7 +165,7 @@ public class Conversation
                     Conversation conversation = new Conversation();
                     conversation.chat.add("Chat is empty");
                     conversation.participants.add(user);
-                    user.convos.add(conversation);
+                    user.getConvos().add(conversation);
                     DisplayConvos(user);
                 }
         }
@@ -191,6 +188,7 @@ public class Conversation
             System.out.println("Add participants First");
         }
     }
+
     public void addParticipants(User user,Conversation conversation)
     {
         boolean found=false;
@@ -201,7 +199,7 @@ public class Conversation
             {
                 found =true;
                 conversation.participants.add(participant);
-                participant.convos.add(conversation);
+                participant.getConvos().add(conversation);
                 System.out.println("User added to conversation successfully");
                 System.out.println("Do you want to add other participants?");
                 String Choice = Main.input.next();
@@ -224,6 +222,7 @@ public class Conversation
             }
         }
     }
+
     public Conversation AddConversation(User user)
     {
         Conversation newConversation= new Conversation();

@@ -3,18 +3,20 @@ import java.util.*;
 public class Comment {
     private int UserID;
     private String content;
-    private  ArrayList<Pair<String, Integer>> replies= new ArrayList<>();
+    private ArrayList<Pair<Integer,Pair<String, Integer>>> replies= new ArrayList<>();
     private int reacts = 0;
+    private boolean reacted;
 
     public Comment(int userId, String content)
     {
         this.UserID = userId;
-        this.content=content;
+        this.content = content;
+        this.reacted = false;
     }
 
     public static void viewComments(Post p)
     {
-        if (p.comments.isEmpty())
+        if (p.getComments().isEmpty())
         {
             System.out.println("No comments ");
             boolean validInput = false;
@@ -28,7 +30,7 @@ public class Comment {
                         Main.input.nextLine();
                         String writeComment=Main.input.nextLine();
                         Comment comment=new Comment(LogIn.loggedIn.getID(), writeComment);
-                        p.comments.add(0, comment);
+                        p.getComments().add(0, comment);
                         validInput = true;
                         viewComments(p);
                         break;
@@ -45,7 +47,7 @@ public class Comment {
         {
             int idx = 0;
             boolean backToPost = false;
-            for (Comment comment : p.comments)
+            for (Comment comment : p.getComments())
             {
                 if(backToPost) break;
                 System.out.println(comment.getContent());
@@ -65,7 +67,9 @@ public class Comment {
                     switch (friendsCommentOption)
                     {
                         case "1": //Reacts
-                            comment.reacts++;
+                            if(!comment.reacted) comment.reacts++;
+                            else comment.reacts--;
+                            comment.reacted = !comment.reacted;
                             System.out.println("1)Do another operation?");
                             System.out.println("2)Next comment ");
                             operationOption1 = Main.input.next();
@@ -73,7 +77,7 @@ public class Comment {
                             else if(operationOption1.equals("2"))
                             {
                                 validInput = true;
-                                if(++idx == p.comments.size())
+                                if(++idx == p.getComments().size())
                                 {
                                     System.out.println("You have reached the last comment");
                                 }
@@ -83,8 +87,8 @@ public class Comment {
                             System.out.println("Write a reply...");
                             Main.input.nextLine();
                             String writeReply = Main.input.nextLine();
-                            Pair<String,Integer> reply = new Pair<>(writeReply,0);
-                            comment.replies.add(reply);
+                            Pair<Integer,Pair<String,Integer>> reply = new Pair<>(comment.replies.size()+1, new Pair<>(writeReply, 0));
+                            comment.replies.add(0, reply);
                             viewReplies(comment); //view Replies
 
                             System.out.println(comment.getContent());
@@ -96,7 +100,7 @@ public class Comment {
                             else if(operationOption1.equals("2"))
                             {
                                 validInput = true;
-                                if(++idx == p.comments.size())
+                                if(++idx == p.getComments().size())
                                 {
                                     System.out.println("You have reached the last comment");
                                 }
@@ -104,7 +108,7 @@ public class Comment {
                             break;
                         case "3": //Skip Comment
                             validInput = true;
-                            if(++idx == p.comments.size())
+                            if(++idx == p.getComments().size())
                             {
                                 System.out.println("You have reached the last comment");
                             }
@@ -134,7 +138,7 @@ public class Comment {
                     case "y":
                         Main.input.nextLine();
                         String writeReply=Main.input.nextLine();
-                        Pair<String,Integer> rep=new Pair<>(writeReply,0);
+                        Pair<Integer, Pair<String,Integer>> rep=new Pair<>(c.replies.size()+1, new Pair<>(writeReply,0));
                         c.replies.add(0, rep);
                         validInput = true;
                         viewReplies(c);
@@ -152,11 +156,11 @@ public class Comment {
         {
             int idx = 0;
             boolean backToComment = false;
-            for (Pair<String,Integer> r : c.replies)
+            for (Pair<Integer, Pair<String,Integer>> r : c.replies)
             {
                 if(backToComment) break;
-                System.out.println(r.getKey());
-                System.out.println("Reacts "+r.getValue());
+                System.out.println(r.getValue().getKey());
+                System.out.println("Reacts "+r.getValue().getValue());
                 System.out.println("1)React ");
                 System.out.println("2)Skip reply ");
                 System.out.println("3)Return to comment ");
@@ -171,7 +175,7 @@ public class Comment {
                     switch (friendsReplyOption)
                     {
                         case "1": //Reacts
-                            r.setValue(r.getValue() + 1);
+                            r.getValue().setValue(r.getValue().getValue() + 1);
                             System.out.println("1)Do another operation?");
                             System.out.println("2)Next reply ");
                             operationOption1 = Main.input.next();
@@ -206,6 +210,7 @@ public class Comment {
     {
         return content;
     }
+
     public void setContent(String commentContent)
     {
         content = commentContent;

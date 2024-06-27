@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Date;
 import java.util.regex.*;
 import java.io.*;
 import java.text.*;
@@ -7,7 +7,8 @@ public class Register
 {
     public Register() {}
 
-    public static void registerUser() {
+    public void registerUser()
+    {
         System.out.println("Enter full name: ");
         String name = Main.input.nextLine();
 
@@ -47,7 +48,8 @@ public class Register
         addUser(newUser);
     }
 
-    private static void addUser(RegisteredUser u) {
+    private void addUser(RegisteredUser u)
+    {
         Main.users.add(u);
         System.out.println("User made successfully");
 
@@ -65,7 +67,9 @@ public class Register
             e.printStackTrace();
         }
     }
-    private static void checkEmail(RegisteredUser u){
+
+    private void checkEmail(RegisteredUser u)
+    {
         if (userExists(u.getEmail())) {
             System.out.println("Email already exists");
             u.setEmail(Main.input.next());
@@ -77,7 +81,8 @@ public class Register
         }
     }
 
-    public static boolean userExists(String email) {
+    public boolean userExists(String email)
+    {
         for (User x : Main.users) {
             if (x.getEmail().equals(email)) {
                 return true;
@@ -86,7 +91,8 @@ public class Register
         return false;
     }
 
-    private static boolean validEmail(RegisteredUser u) {
+    private boolean validEmail(RegisteredUser u)
+    {
         String regex = "^[A-Za-z0-9_.]+@[A-Za-z0-9]+\\.[A-Za-z]{2,}$";//pattern
 
         Pattern pattern = Pattern.compile(regex);
@@ -94,7 +100,8 @@ public class Register
         return matcher.matches();
     }
 
-    public static boolean validPassword(String passWord) {
+    public boolean validPassword(String passWord)
+    {
         if (passWord.length() < 8 || passWord.length() > 16) {
             System.out.println("Password length must be between 8 and 16 characters.");
             return false;
@@ -118,25 +125,29 @@ public class Register
         return true;
     }
 
-    private static boolean containsUppercase(String pw) {
+    private boolean containsUppercase(String pw)
+    {
         Pattern pattern = Pattern.compile("[A-Z]");
         Matcher matcher = pattern.matcher(pw);
         return matcher.find();
     }
 
-    private static boolean containsLowercase(String pw) {
+    private boolean containsLowercase(String pw)
+    {
         Pattern pattern = Pattern.compile("[a-z]");
         Matcher matcher = pattern.matcher(pw);
         return matcher.find();
     }
 
-    private static boolean containsDigit(String pw) {
+    private boolean containsDigit(String pw)
+    {
         Pattern pattern = Pattern.compile("\\d");
         Matcher matcher = pattern.matcher(pw);
         return matcher.find();
     }
 
-    private static boolean validGender(RegisteredUser u) {
+    private boolean validGender(RegisteredUser u)
+    {
         if(u.getGender().toLowerCase().equals("m") ||
                 u.getGender().toLowerCase().equals("f") ||
                 u.getGender().toLowerCase().equals("male") ||
@@ -147,7 +158,8 @@ public class Register
         return false;
     }
 
-    private static boolean validDate(RegisteredUser u) {
+    private boolean validDate(RegisteredUser u)
+    {
         String date = u.getBirthDate();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("d-M-yyyy");//date format

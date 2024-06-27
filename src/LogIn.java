@@ -7,7 +7,8 @@ public class LogIn
     public LogIn()
     {}
 
-    public static boolean login(String email, String password){
+    public boolean login(String email, String password)
+    {
         if(checkValidate(email, password))
         {
             return true;
@@ -19,7 +20,7 @@ public class LogIn
         }
     }
 
-    public static void failed()
+    public void failed()
     {
         System.out.println("Login failed");
         System.out.println("1)Retry");
@@ -45,7 +46,8 @@ public class LogIn
         }
         else if(option.equals("2"))
         {
-            Register.registerUser();
+            Register registerInstance = new Register();
+            registerInstance.registerUser();
         }
         else if(option.equals("3"))
         {
@@ -58,11 +60,12 @@ public class LogIn
         }
     }
 
-    private static void forgotPassword ()
+    private void forgotPassword ()
     {
         System.out.println("Please enter your email: ");
         String email = Main.input.next();
-        if(Register.userExists(email))
+        Register registerInstance = new Register();
+        if(registerInstance.userExists(email))
         {
             for(User u:Main.users)
             {
@@ -72,7 +75,7 @@ public class LogIn
                     do {
                         System.out.println("Please enter new password ");
                         String pass = Main.input.next();
-                        if (Register.validPassword(pass)) {
+                        if (registerInstance.validPassword(pass)) {
                             u.setPassWord(pass);
                             Main.credentialsEntry(new String[]{});
                             validPass = true;
@@ -90,7 +93,7 @@ public class LogIn
         }
     }
 
-    private static void checkEmail()
+    private void checkEmail()
     {
         System.out.println("Wrong email");
         System.out.println("1)try again");
@@ -114,7 +117,7 @@ public class LogIn
         }
     }
 
-    public static boolean checkValidate(String email, String password)
+    public boolean checkValidate(String email, String password)
     {
         for (User u:Main.users)
         {
